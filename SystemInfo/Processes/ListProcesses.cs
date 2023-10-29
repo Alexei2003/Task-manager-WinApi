@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
@@ -9,36 +10,30 @@ namespace SystemInfo.Processes
     {
         private Process[] processes;
 
-        ParallelOptions parallelOptions = new()
-        {
-            MaxDegreeOfParallelism = Environment.ProcessorCount
-        };
-
         public int Length { get; }
 
         public ListProcesses()
         {
-
             var processesIds = PSAPI.EnumProcesses();
 
-            var processesHandles = new IntPtr[processesIds.Length];
-            Parallel.For(0, processesIds.Length, parallelOptions, index =>
-            {
-                processesHandles[index] = PTAPI.OpenProcess(PTAPI.DesiredAccess.PROCESS_ALL_ACCESS, true, processesIds[index]);
-            });
-
-            var processesName = new string[processesIds.Length];
-
-            Parallel.For(0, processesIds.Length, parallelOptions, index =>
-            {
-                processesName[index] = PSAPI.GetProcessImageFileName(processesHandles[index]);
-            });
-
             processes = new Process[processesIds.Length];
-            Parallel.For(0, processesIds.Length, parallelOptions, index =>
+
+            IntPtr processHandle;
+            string processName;
+
+            int indexProcesses = 0;
+            for (int indexIds = 0; indexIds < processesIds.Length; indexIds++)
             {
-                processes[index] = new Process(processesIds[index], processesHandles[index], processesName[index]);
-            });
+                processHandle = PTAPI.OpenProcess(PTAPI.DesiredAccess.PROCESS_ALL_ACCESS, true, processesIds[indexIds]);
+                if (processHandle != IntPtr.Zero)
+                {
+                    processName = PSAPI.GetProcessImageFileName(processHandle);
+                    processes[indexProcesses] = new Process(processesIds[indexIds], processHandle, processName);
+                    indexProcesses++;
+                }
+            };
+
+            Array.Resize(ref processes, indexProcesses);
 
             Length = processes.Length;
         }
@@ -53,10 +48,10 @@ namespace SystemInfo.Processes
 
         ~ListProcesses()
         {
-            Parallel.ForEach(processes, parallelOptions, processe =>
-            {
-                HAPI.CloseHandle(processe.Handle);
-            });
+            foreach(var process in processes) 
+            { 
+                HAPI.CloseHandle(process.Handle);
+            };
         }
     }
 }

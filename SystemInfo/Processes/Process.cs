@@ -6,6 +6,14 @@
         public IntPtr Handle { get; }
         public string Name { get; }
         public string FilePath { get; }
+        public string Description { get; }
+
+        // status
+        public string UserName { get; }
+        public int Cpu {  get; }
+        public int Memory { get; }
+        public int CountThreads {  get; }
+        public int Architecture { get; }
 
         public Process(uint id, IntPtr handle, string name)
         {

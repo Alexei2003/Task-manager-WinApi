@@ -1,4 +1,6 @@
-﻿namespace SystemInfo.Processes.WinApi.PSAPI
+﻿using System.Text;
+
+namespace SystemInfo.Processes.WinApi.PSAPI
 {
     public class PSAPI : PsapiDLL
     {
@@ -11,7 +13,7 @@
 
             var result = new uint[COUNT_PROCESS];
 
-            if (!EnumProcesses(result, COUNT_PROCESS, out uint realCountProcess))
+            if (!PsapiDLL.EnumProcesses(result, COUNT_PROCESS, out uint realCountProcess))
             {
                 return null;
             }
@@ -23,6 +25,22 @@
             }
 
             Array.Resize<uint>(ref result, Convert.ToInt32(realCountProcess));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Извлекает идентификатор процесса для каждого объекта процесса в системе.
+        /// </summary>
+        public static string GetProcessImageFileName(IntPtr hProcess)
+        {
+            const int SIZE_STRING = 1024;
+
+            StringBuilder buffStr = new StringBuilder(SIZE_STRING);
+
+            PsapiDLL.GetProcessImageFileName(hProcess, buffStr, SIZE_STRING);
+
+            var result = buffStr.ToString();
 
             return result;
         }

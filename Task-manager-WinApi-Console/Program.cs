@@ -1,6 +1,5 @@
 ﻿
 using SystemInfo.Processes;
-using SystemInfo.Processes.WinApi.PSAPI;
 
 namespace TaskManager
 {
@@ -10,9 +9,13 @@ namespace TaskManager
         {
             var listProcesses = new ListProcesses();
 
-            for(int i  = 0; i < listProcesses.Length; i++)
+            for (int i = 0; i < listProcesses.Length; i++)
             {
-                Console.WriteLine($"{listProcesses[i].Id:d8} | {listProcesses[i].Handle:d8} |");
+                if(listProcesses[i].Id == 6416)
+                {
+                    var a = 1;
+                }
+                Console.WriteLine($"{listProcesses[i].Id:d8} | {listProcesses[i].Handle:d8} | {listProcesses[i].Name.PadRight(50 , ' ')} |");
             }
 
             Console.ReadLine();

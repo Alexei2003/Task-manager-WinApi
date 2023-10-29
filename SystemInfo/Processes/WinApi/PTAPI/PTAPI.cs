@@ -25,9 +25,12 @@
             PROCESS_VM_WRITE = 0x0020,
         }
 
+        /// <summary>
+        /// Открывает существующий локальный объект процесса.(Возвращает Handle)
+        /// </summary>
         public static IntPtr OpenProcess(DesiredAccess desiredAccess, bool inheritHandle, uint processId)
         {
-            var result = OpenProcess(Convert.ToInt64(desiredAccess), inheritHandle, processId);
+            var result = ProcessthreadsapiDLL.OpenProcess(Convert.ToInt64(desiredAccess), inheritHandle, processId);
 
             return result;
         }

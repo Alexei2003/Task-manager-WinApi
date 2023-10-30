@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using SystemInfo.Processes.WinApi.HAPI;
+﻿using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
 
@@ -7,7 +6,7 @@ namespace SystemInfo.Processes
 {
     public class ListProcesses
     {
-        private Process[] processes;
+        private readonly Process[] processes;
 
         public int Length { get; }
 
@@ -29,7 +28,7 @@ namespace SystemInfo.Processes
                 {
                     processName = PSAPI.GetProcessImageFileName(processHandle);
                     processMemory = PSAPI.GetProcessMemoryInfo(processHandle);
-                    processes[indexProcesses] = new Process(processesIds[indexIds], processHandle, processName, processMemory.QuotaPeakPagedPoolUsage);
+                    processes[indexProcesses] = new Process(processesIds[indexIds], processHandle, processName, processMemory);
                     indexProcesses++;
                 }
             };

@@ -49,7 +49,7 @@ namespace SystemInfo.Processes.WinApi.PSAPI
         {
             PsapiDLL.GetProcessMemoryInfo(processHandle, out PROCESS_MEMORY_COUNTERS processMemoryCounters, 72);
 
-            return  processMemoryCounters;
+            return processMemoryCounters;
         }
     }
 }

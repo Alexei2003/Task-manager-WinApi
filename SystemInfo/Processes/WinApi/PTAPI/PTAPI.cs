@@ -5,13 +5,13 @@
         /// <summary>
         /// Константы доступа к процессу
         /// </summary>
-        public enum DesiredAccess : long
+        public enum DesiredAccess : uint
         {
-            DELETE = 0x00010000L,
-            READ_CONTROL = 0x00020000L,
-            SYNCHRONIZE = 0x00100000L,
-            WRITE_DAC = 0x00040000L,
-            WRITE_OWNER = 0x00080000L,
+            DELETE = 0x00010000,
+            READ_CONTROL = 0x00020000,
+            SYNCHRONIZE = 0x00100000,
+            WRITE_DAC = 0x00040000,
+            WRITE_OWNER = 0x00080000,
             PROCESS_ALL_ACCESS = 0x001F0FFF,
             PROCESS_CREATE_PROCESS = 0x0080,
             PROCESS_CREATE_THREAD = 0x0002,
@@ -32,7 +32,7 @@
         /// </summary>
         public static IntPtr OpenProcess(DesiredAccess desiredAccess, bool inheritHandle, uint processId)
         {
-            var result = ProcessthreadsapiDLL.OpenProcess(Convert.ToInt64(desiredAccess), inheritHandle, processId);
+            var result = ProcessthreadsapiDLL.OpenProcess(Convert.ToUInt32(desiredAccess), inheritHandle, processId);
 
             return result;
         }

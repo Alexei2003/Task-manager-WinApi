@@ -19,14 +19,14 @@ namespace SystemInfo.Processes.WinApi
         {
             public uint cb;
             public uint PageFaultCount;
-            public uint PeakWorkingSetSize;
-            public uint WorkingSetSize;
-            public uint QuotaPeakPagedPoolUsage;
-            public uint QuotaPagedPoolUsage;
-            public uint QuotaPeakNonPagedPoolUsage;
-            public uint QuotaNonPagedPoolUsage;
-            public uint PagefileUsage;
-            public uint PeakPagefileUsage;
+            public UInt64 PeakWorkingSetSize;
+            public UInt64 WorkingSetSize;
+            public UInt64 QuotaPeakPagedPoolUsage;
+            public UInt64 QuotaPagedPoolUsage;
+            public UInt64 QuotaPeakNonPagedPoolUsage;
+            public UInt64 QuotaNonPagedPoolUsage;
+            public UInt64 PagefileUsage;
+            public UInt64 PeakPagefileUsage;
         }
     }
 }

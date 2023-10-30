@@ -1,4 +1,6 @@
-﻿namespace SystemInfo.Processes
+﻿using SystemInfo.Processes.WinApi.PSAPI;
+
+namespace SystemInfo.Processes
 {
     public class Process
     {
@@ -12,10 +14,10 @@
 
         public string UserName { get; }
         public int Cpu { get; }
-        public uint Memory { get; }
+        public PSAPI.PROCESS_MEMORY_COUNTERS Memory { get; }
         public int CountThreads { get; }
 
-        public Process(uint id, IntPtr handle, string name,uint memory)
+        public Process(uint id, IntPtr handle, string name, PSAPI.PROCESS_MEMORY_COUNTERS memory)
         {
             Id = id;
             Handle = handle;

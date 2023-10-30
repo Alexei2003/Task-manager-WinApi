@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Runtime.InteropServices;
 using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
@@ -20,15 +19,17 @@ namespace SystemInfo.Processes
 
             IntPtr processHandle;
             string processName;
+            PSAPI.PROCESS_MEMORY_COUNTERS processMemory;
 
             int indexProcesses = 0;
             for (int indexIds = 0; indexIds < processesIds.Length; indexIds++)
             {
-                processHandle = PTAPI.OpenProcess(PTAPI.DesiredAccess.PROCESS_ALL_ACCESS, true, processesIds[indexIds]);
+                processHandle = PTAPI.OpenProcess(PTAPI.DesiredAccess.PROCESS_ALL_ACCESS, false, processesIds[indexIds]);
                 if (processHandle != IntPtr.Zero)
                 {
                     processName = PSAPI.GetProcessImageFileName(processHandle);
-                    processes[indexProcesses] = new Process(processesIds[indexIds], processHandle, processName);
+                    processMemory = PSAPI.GetProcessMemoryInfo(processHandle);
+                    processes[indexProcesses] = new Process(processesIds[indexIds], processHandle, processName, processMemory.QuotaPeakPagedPoolUsage);
                     indexProcesses++;
                 }
             };
@@ -36,6 +37,8 @@ namespace SystemInfo.Processes
             Array.Resize(ref processes, indexProcesses);
 
             Length = processes.Length;
+
+            processes = processes.OrderBy(p => p.Id).ToArray();
         }
 
         public Process this[int i]
@@ -48,8 +51,8 @@ namespace SystemInfo.Processes
 
         ~ListProcesses()
         {
-            foreach(var process in processes) 
-            { 
+            foreach (var process in processes)
+            {
                 HAPI.CloseHandle(process.Handle);
             };
         }

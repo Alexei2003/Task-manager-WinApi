@@ -2,7 +2,9 @@
 {
     public class PTAPI : ProcessthreadsapiDLL
     {
-        // Определение констант доступа к процессу
+        /// <summary>
+        /// Константы доступа к процессу
+        /// </summary>
         public enum DesiredAccess : long
         {
             DELETE = 0x00010000L,
@@ -33,6 +35,11 @@
             var result = ProcessthreadsapiDLL.OpenProcess(Convert.ToInt64(desiredAccess), inheritHandle, processId);
 
             return result;
+        }
+
+        public static bool TerminateProcess(IntPtr processHandle, uint exitCode)
+        {
+            return ProcessthreadsapiDLL.TerminateProcess(processHandle, exitCode);
         }
 
     }

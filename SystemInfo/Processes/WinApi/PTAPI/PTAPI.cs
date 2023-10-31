@@ -32,9 +32,7 @@
         /// </summary>
         public static IntPtr OpenProcess(DesiredAccess desiredAccess, bool inheritHandle, uint processId)
         {
-            var result = ProcessthreadsapiDLL.OpenProcess(Convert.ToUInt32(desiredAccess), inheritHandle, processId);
-
-            return result;
+            return ProcessthreadsapiDLL.OpenProcess(Convert.ToUInt32(desiredAccess), inheritHandle, processId);
         }
 
         public static bool TerminateProcess(IntPtr processHandle, uint exitCode)

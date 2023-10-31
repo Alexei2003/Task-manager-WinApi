@@ -31,7 +31,7 @@ namespace SystemInfo.Processes
                     processes[indexProcesses] = new Process(processesIds[indexIds], processHandle, processName, processMemory);
                     indexProcesses++;
                 }
-            };
+            }
 
             Array.Resize(ref processes, indexProcesses);
 

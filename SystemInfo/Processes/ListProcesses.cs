@@ -1,10 +1,12 @@
-﻿using SystemInfo.Processes.WinApi.HAPI;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
 
 namespace SystemInfo.Processes
 {
-    public class ListProcesses
+    public class ListProcesses : IEnumerable<Process>
     {
         private readonly Process[] processes;
 
@@ -48,12 +50,18 @@ namespace SystemInfo.Processes
             }
         }
 
-        ~ListProcesses()
+        public IEnumerator<Process> GetEnumerator()
         {
-            foreach (var process in processes)
+            foreach(var process in processes)
             {
-                HAPI.CloseHandle(process.Handle);
-            };
+                yield return process;
+            }
+        }
+
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

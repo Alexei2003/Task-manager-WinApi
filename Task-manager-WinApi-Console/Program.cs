@@ -1,5 +1,4 @@
 ﻿using SystemInfo.Processes;
-using SystemInfo.Processes.WinApi.PTAPI;
 
 namespace TaskManager
 {
@@ -15,9 +14,6 @@ namespace TaskManager
             }
 
             Console.WriteLine($"{listProcesses.Length}");
-            var h = new IntPtr(Convert.ToInt64(Console.ReadLine()));
-
-            PTAPI.TerminateProcess(h, 100);
         }
     }
 }

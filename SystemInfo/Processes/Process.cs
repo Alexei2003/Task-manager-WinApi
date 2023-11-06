@@ -1,4 +1,6 @@
-﻿using SystemInfo.Processes.WinApi.PSAPI;
+﻿using SystemInfo.Processes.WinApi.HAPI;
+using SystemInfo.Processes.WinApi.PSAPI;
+using SystemInfo.Processes.WinApi.PTAPI;
 
 namespace SystemInfo.Processes
 {
@@ -32,6 +34,12 @@ namespace SystemInfo.Processes
             Name = subStr.Last();
 
             Memory = memory;
+        }
+
+        public void KillProcess()
+        {
+            PTAPI.TerminateProcess(Handle, 0);
+            HAPI.CloseHandle(Handle);
         }
     }
 }

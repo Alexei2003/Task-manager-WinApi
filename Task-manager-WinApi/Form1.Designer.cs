@@ -30,72 +30,68 @@
         {
             components = new System.ComponentModel.Container();
             dvgProcesses = new DataGridView();
-            processesName = new DataGridViewTextBoxColumn();
-            processesId = new DataGridViewTextBoxColumn();
-            processesMemory = new DataGridViewTextBoxColumn();
             tProcessesUpdate = new System.Windows.Forms.Timer(components);
+            pProceses = new Panel();
+            bProcesses = new Button();
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).BeginInit();
+            pProceses.SuspendLayout();
             SuspendLayout();
             // 
             // dvgProcesses
             // 
             dvgProcesses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dvgProcesses.Columns.AddRange(new DataGridViewColumn[] { processesName, processesId, processesMemory });
-            dvgProcesses.Location = new Point(12, 12);
+            dvgProcesses.Location = new Point(10, 10);
+            dvgProcesses.MultiSelect = false;
             dvgProcesses.Name = "dvgProcesses";
             dvgProcesses.RowHeadersWidth = 45;
             dvgProcesses.RowTemplate.Height = 27;
-            dvgProcesses.Size = new Size(776, 426);
+            dvgProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dvgProcesses.Size = new Size(780, 430);
             dvgProcesses.TabIndex = 0;
             dvgProcesses.CellContentClick += dvgProcesses_CellContentClick;
-            // 
-            // processesName
-            // 
-            processesName.HeaderText = "Name";
-            processesName.MinimumWidth = 6;
-            processesName.Name = "processesName";
-            processesName.ReadOnly = true;
-            processesName.Width = 110;
-            // 
-            // processesId
-            // 
-            processesId.HeaderText = "Id";
-            processesId.MinimumWidth = 6;
-            processesId.Name = "processesId";
-            processesId.ReadOnly = true;
-            processesId.Width = 110;
-            // 
-            // processesMemory
-            // 
-            processesMemory.HeaderText = "Memory";
-            processesMemory.MinimumWidth = 6;
-            processesMemory.Name = "processesMemory";
-            processesMemory.ReadOnly = true;
-            processesMemory.Width = 110;
             // 
             // tProcessesUpdate
             // 
             tProcessesUpdate.Interval = 5000;
             tProcessesUpdate.Tick += tProcessesUpdate_Tick;
             // 
+            // pProceses
+            // 
+            pProceses.Controls.Add(dvgProcesses);
+            pProceses.Location = new Point(0, 50);
+            pProceses.Name = "pProceses";
+            pProceses.Size = new Size(800, 450);
+            pProceses.TabIndex = 1;
+            // 
+            // bProcesses
+            // 
+            bProcesses.Location = new Point(10, 0);
+            bProcesses.Name = "bProcesses";
+            bProcesses.Size = new Size(100, 50);
+            bProcesses.TabIndex = 2;
+            bProcesses.Text = "Процессы";
+            bProcesses.UseVisualStyleBackColor = true;
+            bProcesses.Click += bProcesses_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(dvgProcesses);
+            ClientSize = new Size(1389, 686);
+            Controls.Add(bProcesses);
+            Controls.Add(pProceses);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).EndInit();
+            pProceses.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private DataGridView dvgProcesses;
-        private DataGridViewTextBoxColumn processesName;
-        private DataGridViewTextBoxColumn processesId;
-        private DataGridViewTextBoxColumn processesMemory;
         private System.Windows.Forms.Timer tProcessesUpdate;
+        private Panel pProceses;
+        private Button bProcesses;
     }
 }

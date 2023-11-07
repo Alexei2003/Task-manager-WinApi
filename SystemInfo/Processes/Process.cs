@@ -12,12 +12,11 @@ namespace SystemInfo.Processes
         public string FilePath { get; }
         public string Description { get; }
 
-        // status
-
         public string UserName { get; }
         public int Cpu { get; }
-        public PSAPI.PROCESS_MEMORY_COUNTERS Memory { get; }
         public int CountThreads { get; }
+        public PSAPI.PROCESS_MEMORY_COUNTERS Memory { get; }
+
 
         public Process(uint id, IntPtr handle, string name, PSAPI.PROCESS_MEMORY_COUNTERS memory)
         {

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task-manager-WinApi-Console
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemInfo", "SystemInfo\SystemInfo.csproj", "{FD99A1CB-7A09-48F8-8455-9DCF858F2FA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task-manager-WinApi", "Task-manager-WinApi\Task-manager-WinApi.csproj", "{73D595DC-746C-4BD5-9152-E1746C0407FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task-manager-WinApi", "Task-manager-WinApi\Task-manager-WinApi.csproj", "{73D595DC-746C-4BD5-9152-E1746C0407FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

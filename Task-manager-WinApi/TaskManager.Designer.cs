@@ -32,6 +32,7 @@
             dvgProcesses = new DataGridView();
             tUpdate = new System.Windows.Forms.Timer(components);
             pProceses = new Panel();
+            bKillProcess = new Button();
             bProcesses = new Button();
             bGlobalStatistics = new Button();
             pGlobalStatistics = new Panel();
@@ -50,7 +51,8 @@
             dvgProcesses.AllowUserToAddRows = false;
             dvgProcesses.AllowUserToDeleteRows = false;
             dvgProcesses.AllowUserToOrderColumns = true;
-            dvgProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dvgProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dvgProcesses.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dvgProcesses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dvgProcesses.Location = new Point(10, 10);
             dvgProcesses.MultiSelect = false;
@@ -58,7 +60,7 @@
             dvgProcesses.RowHeadersWidth = 5;
             dvgProcesses.RowTemplate.Height = 27;
             dvgProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dvgProcesses.Size = new Size(780, 430);
+            dvgProcesses.Size = new Size(780, 361);
             dvgProcesses.TabIndex = 0;
             dvgProcesses.CellContentClick += dvgProcesses_CellContentClick;
             // 
@@ -69,11 +71,22 @@
             // 
             // pProceses
             // 
+            pProceses.Controls.Add(bKillProcess);
             pProceses.Controls.Add(dvgProcesses);
             pProceses.Location = new Point(0, 50);
             pProceses.Name = "pProceses";
             pProceses.Size = new Size(800, 450);
             pProceses.TabIndex = 1;
+            // 
+            // bKillProcess
+            // 
+            bKillProcess.Location = new Point(10, 388);
+            bKillProcess.Name = "bKillProcess";
+            bKillProcess.Size = new Size(100, 50);
+            bKillProcess.TabIndex = 6;
+            bKillProcess.Text = "Закрыть процесс";
+            bKillProcess.UseVisualStyleBackColor = true;
+            bKillProcess.Click += bKillProcess_Click;
             // 
             // bProcesses
             // 
@@ -143,7 +156,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1924, 985);
+            ClientSize = new Size(1623, 985);
             Controls.Add(bDevicesInfo);
             Controls.Add(pDevicesInfo);
             Controls.Add(bGlobalStatistics);
@@ -171,5 +184,6 @@
         private Button bDevicesInfo;
         private Button button1;
         private Button button2;
+        private Button bKillProcess;
     }
 }

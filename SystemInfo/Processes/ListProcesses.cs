@@ -1,6 +1,4 @@
 ﻿using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
 
@@ -42,6 +40,19 @@ namespace SystemInfo.Processes
             processes = processes.OrderBy(p => p.Id).ToArray();
         }
 
+        public int? GetIndexProcess(uint processId)
+        {
+            for(int i = 0; i < Length;i++)
+            {
+                if (processes[i].Id == processId)
+                {
+                    return i;
+                }
+            }
+
+            return null;
+        }
+
         public Process this[int i]
         {
             get
@@ -55,7 +66,7 @@ namespace SystemInfo.Processes
 
         public IEnumerator<Process> GetEnumerator()
         {
-            foreach(var process in processes)
+            foreach (var process in processes)
             {
                 yield return process;
             }

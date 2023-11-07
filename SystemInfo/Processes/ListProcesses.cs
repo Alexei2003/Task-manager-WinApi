@@ -46,7 +46,10 @@ namespace SystemInfo.Processes
         {
             get
             {
-                return processes[i];
+                lock (this)
+                {
+                    return processes[i];
+                }
             }
         }
 

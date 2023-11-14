@@ -43,6 +43,12 @@ namespace Task_manager_WinApi
             "PeakPagefileUsage(KB)"
         };
 
+        public int Count { get; }
+        public ProcessesColumns()
+        {
+            Count = processesColumnsNames.Length;
+        }
+
         public object GetColumeValue(ProcessesColumnsName name, Process process)
         {
             switch (name)

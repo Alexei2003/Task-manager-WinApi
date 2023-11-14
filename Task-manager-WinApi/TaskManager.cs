@@ -6,14 +6,14 @@ using static Task_manager_WinApi.ProcessesColumns;
 
 namespace Task_manager_WinApi
 {
-    public partial class TaskManager : Form
+    internal partial class TaskManager : Form
     {
         private ListProcesses listProcesses = new();
         private ProcessesColumns processesColumns = new();
         private ProcessesColumnsName[] processesColumnWhitchVisable = new ProcessesColumnsName[]
         {
-            ProcessesColumnsName.Name,
             ProcessesColumnsName.Id,
+            ProcessesColumnsName.Name,
             ProcessesColumnsName.FilePath,
             ProcessesColumnsName.Description,
             ProcessesColumnsName.UserName,
@@ -29,8 +29,12 @@ namespace Task_manager_WinApi
             ProcessesColumnsName.PagefileUsage,
             ProcessesColumnsName.PeakPagefileUsage
         };
+        public ProcessesColumnsName[] TmpProcessesColumnWhitchVisable { get; set; } = null;
+
         private int? selectedProcessIndex = null;
         private uint? selectedProcessId = null;
+
+        private ChangeVisableColumns subForm = null;
 
         public TaskManager()
         {
@@ -51,6 +55,12 @@ namespace Task_manager_WinApi
             int IndexFirstColumnOnDisplay = dvgProcesses.FirstDisplayedScrollingColumnIndex;
 
             listProcesses = new ListProcesses();
+
+            if (TmpProcessesColumnWhitchVisable != null)
+            {
+                processesColumnWhitchVisable = TmpProcessesColumnWhitchVisable;
+                TmpProcessesColumnWhitchVisable = null;
+            }
 
             var dataTable = new DataTable();
             foreach (var indexColumn in processesColumnWhitchVisable)
@@ -119,7 +129,7 @@ namespace Task_manager_WinApi
 
         private bool IsSelectedProcess(int i)
         {
-            if (Convert.ToUInt32(dvgProcesses.Rows[i].Cells["id"].Value.ToString()) == Convert.ToUInt32(selectedProcessId))
+            if (Convert.ToUInt32(dvgProcesses.Rows[i].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString()) == Convert.ToUInt32(selectedProcessId))
             {
                 selectedProcessIndex = i;
                 if (selectedProcessIndex != null)
@@ -177,13 +187,20 @@ namespace Task_manager_WinApi
         {
             if (selectedProcessIndex != null)
             {
-                var strProcessid = dvgProcesses.Rows[Convert.ToInt32(selectedProcessIndex)].Cells["Id"].Value.ToString();
+                var strProcessid = dvgProcesses.Rows[Convert.ToInt32(selectedProcessIndex)].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString();
                 var processIndex = listProcesses.GetIndexProcess(Convert.ToUInt32(strProcessid));
                 if (processIndex != null)
                 {
                     listProcesses[Convert.ToInt32(processIndex)].KillProcess();
                 }
             }
+        }
+
+        private void bChangeVisableColumns_Click(object sender, EventArgs e)
+        {
+            subForm = new ChangeVisableColumns(processesColumnWhitchVisable, processesColumns, this);
+
+            subForm.Visible = true;
         }
     }
 }

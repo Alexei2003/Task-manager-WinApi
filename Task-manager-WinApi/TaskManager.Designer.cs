@@ -40,6 +40,7 @@
             pDevicesInfo = new Panel();
             button2 = new Button();
             bDevicesInfo = new Button();
+            bChangeVisableColumns = new Button();
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).BeginInit();
             pProceses.SuspendLayout();
             pGlobalStatistics.SuspendLayout();
@@ -72,6 +73,7 @@
             // 
             // pProceses
             // 
+            pProceses.Controls.Add(bChangeVisableColumns);
             pProceses.Controls.Add(bKillProcess);
             pProceses.Controls.Add(dvgProcesses);
             pProceses.Location = new Point(0, 50);
@@ -153,6 +155,16 @@
             bDevicesInfo.UseVisualStyleBackColor = true;
             bDevicesInfo.Click += bDevicesInfo_Click;
             // 
+            // bChangeVisableColumns
+            // 
+            bChangeVisableColumns.Location = new Point(116, 388);
+            bChangeVisableColumns.Name = "bChangeVisableColumns";
+            bChangeVisableColumns.Size = new Size(100, 50);
+            bChangeVisableColumns.TabIndex = 7;
+            bChangeVisableColumns.Text = "Скрыть столбцы";
+            bChangeVisableColumns.UseVisualStyleBackColor = true;
+            bChangeVisableColumns.Click += bChangeVisableColumns_Click;
+            // 
             // TaskManager
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -187,5 +199,6 @@
         private Button button1;
         private Button button2;
         private Button bKillProcess;
+        private Button bChangeVisableColumns;
     }
 }

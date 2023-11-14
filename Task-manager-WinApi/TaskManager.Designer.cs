@@ -57,6 +57,7 @@
             dvgProcesses.Location = new Point(10, 10);
             dvgProcesses.MultiSelect = false;
             dvgProcesses.Name = "dvgProcesses";
+            dvgProcesses.ReadOnly = true;
             dvgProcesses.RowHeadersWidth = 5;
             dvgProcesses.RowTemplate.Height = 27;
             dvgProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -163,6 +164,7 @@
             Controls.Add(pGlobalStatistics);
             Controls.Add(bProcesses);
             Controls.Add(pProceses);
+            DoubleBuffered = true;
             Name = "TaskManager";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).EndInit();

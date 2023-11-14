@@ -42,7 +42,7 @@ namespace SystemInfo.Processes
 
         public int? GetIndexProcess(uint processId)
         {
-            for(int i = 0; i < Length;i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (processes[i].Id == processId)
                 {

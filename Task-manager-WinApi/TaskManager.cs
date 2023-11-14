@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Data;
+using System.Reflection;
 using SystemInfo.Processes;
 using static Task_manager_WinApi.ProcessesColumns;
 
@@ -18,7 +19,15 @@ namespace Task_manager_WinApi
             ProcessesColumnsName.UserName,
             ProcessesColumnsName.Cpu,
             ProcessesColumnsName.CountThreads,
-            ProcessesColumnsName.Memory
+            ProcessesColumnsName.PageFaultCount,
+            ProcessesColumnsName.PeakWorkingSetSize,
+            ProcessesColumnsName.WorkingSetSize,
+            ProcessesColumnsName.QuotaPeakPagedPoolUsage,
+            ProcessesColumnsName.QuotaPagedPoolUsage,
+            ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,
+            ProcessesColumnsName.QuotaNonPagedPoolUsage,
+            ProcessesColumnsName.PagefileUsage,
+            ProcessesColumnsName.PeakPagefileUsage
         };
         private int? selectedProcessIndex = null;
         private uint? selectedProcessId = null;
@@ -29,10 +38,11 @@ namespace Task_manager_WinApi
         {
             InitializeComponent();
             ProcessesUpdate();
-            tUpdate.Interval = 5000;
             tUpdate.Start();
 
             HideAllPanelsExcept(pProceses);
+
+            typeof(DataGridView).InvokeMember("DoubleBuffered",BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,null,dvgProcesses, new object[] { true });
         }
 
         private void ProcessesUpdate()
@@ -80,7 +90,7 @@ namespace Task_manager_WinApi
                 }
             }
 
-            if (IndexFirstRowOnDisplay > -1 && IndexFirstColumnOnDisplay>-1)
+            if (IndexFirstRowOnDisplay > -1 && IndexFirstColumnOnDisplay > -1)
             {
                 dvgProcesses.FirstDisplayedScrollingRowIndex = IndexFirstRowOnDisplay;
                 dvgProcesses.FirstDisplayedScrollingColumnIndex = IndexFirstColumnOnDisplay;

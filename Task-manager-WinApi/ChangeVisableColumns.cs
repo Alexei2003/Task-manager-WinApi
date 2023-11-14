@@ -12,7 +12,7 @@ namespace Task_manager_WinApi
             InitializeComponent();
             this.taskManager = taskManager;
 
-            checkBoxs = new CheckBox[processesColumns.Count-1];
+            checkBoxs = new CheckBox[processesColumns.Count - 1];
 
             const int Y_STEP = 30;
             const int X_CHECK_BOX = 10;
@@ -38,7 +38,7 @@ namespace Task_manager_WinApi
 
             for (int i = 0; i < checkBoxs.Length; i++)
             {
-                if (processesColumnWhitchVisable.Contains((ProcessesColumnsName)i+1))
+                if (processesColumnWhitchVisable.Contains((ProcessesColumnsName)i + 1))
                 {
                     checkBoxs[i].Checked = true;
                 }
@@ -53,8 +53,7 @@ namespace Task_manager_WinApi
 
         private void bOk_Click(object sender, EventArgs e)
         {
-            var tmp = new ProcessesColumnsName[checkBoxs.Length];
-
+            var tmp = new ProcessesColumnsName[checkBoxs.Length + 1];
             int count = 0;
 
             tmp[count++] = ProcessesColumnsName.Id;
@@ -63,7 +62,7 @@ namespace Task_manager_WinApi
             {
                 if (checkBoxs[i].Checked)
                 {
-                    tmp[count++] = (ProcessesColumnsName)i+1;
+                    tmp[count++] = (ProcessesColumnsName)i + 1;
                 }
             }
 

@@ -84,6 +84,7 @@ namespace Task_manager_WinApi
                 dataTable.Rows.Add(data);
             }
 
+            dvgProcesses.Columns.Clear();
             dvgProcesses.DataSource = dataTable;
 
             for (int i = 0; i < dataTable.Columns.Count; i++)

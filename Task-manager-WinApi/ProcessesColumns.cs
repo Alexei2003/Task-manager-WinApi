@@ -43,13 +43,12 @@ namespace Task_manager_WinApi
             "PeakPagefileUsage(KB)"
         };
 
-        public string? GetColumeValue(ProcessesColumnsName name, Process process)
+        public object GetColumeValue(ProcessesColumnsName name, Process process)
         {
-
             switch (name)
             {
                 case ProcessesColumnsName.Id:
-                    return $"{process.Id,+10}";
+                    return $"{process.Id}";
                 case ProcessesColumnsName.Name:
                     return $"{process.Name}";
                 case ProcessesColumnsName.FilePath:

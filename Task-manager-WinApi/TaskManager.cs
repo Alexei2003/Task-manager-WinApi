@@ -32,8 +32,6 @@ namespace Task_manager_WinApi
         private int? selectedProcessIndex = null;
         private uint? selectedProcessId = null;
 
-        private readonly System.Threading.Timer timer;
-
         public TaskManager()
         {
             InitializeComponent();
@@ -42,7 +40,7 @@ namespace Task_manager_WinApi
 
             HideAllPanelsExcept(pProceses);
 
-            typeof(DataGridView).InvokeMember("DoubleBuffered",BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,null,dvgProcesses, new object[] { true });
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dvgProcesses, new object[] { true });
         }
 
         private void ProcessesUpdate()
@@ -77,6 +75,19 @@ namespace Task_manager_WinApi
             }
 
             dvgProcesses.DataSource = dataTable;
+
+            for (int i = 0; i < dataTable.Columns.Count; i++)
+            {
+                if (dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name))
+                {
+                    dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
+                }
+                else
+                {
+                    dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+                }
+            }
+
             if (sortedColumn != null && dvgProcesses.Columns.Contains(sortedColumn.Name) && sortOrder != SortOrder.None)
             {
                 dvgProcesses.Sort(dvgProcesses.Columns[sortedColumn.Name], (ListSortDirection)sortOrder - 1);

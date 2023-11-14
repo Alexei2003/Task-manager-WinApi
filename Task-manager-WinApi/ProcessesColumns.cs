@@ -48,7 +48,7 @@ namespace Task_manager_WinApi
             switch (name)
             {
                 case ProcessesColumnsName.Id:
-                    return $"{process.Id}";
+                    return $"{process.Id,+10}";
                 case ProcessesColumnsName.Name:
                     return $"{process.Name}";
                 case ProcessesColumnsName.FilePath:
@@ -62,23 +62,23 @@ namespace Task_manager_WinApi
                 case ProcessesColumnsName.CountThreads:
                     return null;
                 case ProcessesColumnsName.PageFaultCount:
-                    return $"{process.Memory.PageFaultCount}";
+                    return $"{process.Memory.PageFaultCount,+10}";
                 case ProcessesColumnsName.PeakWorkingSetSize:
-                    return $"{process.Memory.PeakWorkingSetSize / 1024}";
+                    return $"{process.Memory.PeakWorkingSetSize / 1024,+10}";
                 case ProcessesColumnsName.WorkingSetSize:
-                    return $"{process.Memory.WorkingSetSize / 1024}";
+                    return $"{process.Memory.WorkingSetSize / 1024,+10}";
                 case ProcessesColumnsName.QuotaPeakPagedPoolUsage:
-                    return $"{process.Memory.QuotaPeakPagedPoolUsage / 1024}";
+                    return $"{process.Memory.QuotaPeakPagedPoolUsage / 1024,+10}";
                 case ProcessesColumnsName.QuotaPagedPoolUsage:
-                    return $"{process.Memory.QuotaPagedPoolUsage / 1024}";
+                    return $"{process.Memory.QuotaPagedPoolUsage / 1024,+10}";
                 case ProcessesColumnsName.QuotaPeakNonPagedPoolUsage:
-                    return $"{process.Memory.QuotaPeakNonPagedPoolUsage / 1024}";
+                    return $"{process.Memory.QuotaPeakNonPagedPoolUsage / 1024,+10}";
                 case ProcessesColumnsName.QuotaNonPagedPoolUsage:
-                    return $"{process.Memory.QuotaNonPagedPoolUsage / 1024}";
+                    return $"{process.Memory.QuotaNonPagedPoolUsage / 1024,+10}";
                 case ProcessesColumnsName.PagefileUsage:
-                    return $"{process.Memory.PagefileUsage / 1024}";
+                    return $"{process.Memory.PagefileUsage / 1024,+10}";
                 case ProcessesColumnsName.PeakPagefileUsage:
-                    return $"{process.Memory.PeakPagefileUsage / 1024}";
+                    return $"{process.Memory.PeakPagefileUsage / 1024,+10}";
                 default:
                     return null;
             }

@@ -5,16 +5,15 @@ namespace SystemInfo.Processes.WinApi
 {
     public class PsapiDLL
     {
+        protected const int PROCESS_MEMORY_COUNTERS_SIZE = 2 * sizeof(uint) + 8 * sizeof(UInt64);
+
         [DllImport("psapi.dll", SetLastError = true)]
         protected static extern bool EnumProcesses(uint[] processIds, uint size, out uint bytesReturned);
 
-        [DllImport("psapi.dll", SetLastError = true)]
-        protected static extern uint GetProcessImageFileName(IntPtr hProcess, StringBuilder lpImageFileName, uint nSize);
+        [DllImport("psapi.dll", CharSet = CharSet.Auto)]
+        protected static extern int GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, StringBuilder baseName, int size);
 
-        [DllImport("psapi.dll", SetLastError = true)]
-        protected static extern bool GetProcessMemoryInfo(IntPtr hProcess, out PROCESS_MEMORY_COUNTERS counters, uint cb);
-
-        [StructLayout(LayoutKind.Sequential, Size = 72)]
+        [StructLayout(LayoutKind.Sequential)]
         public struct PROCESS_MEMORY_COUNTERS
         {
             public uint cb;
@@ -28,5 +27,8 @@ namespace SystemInfo.Processes.WinApi
             public UInt64 PagefileUsage;
             public UInt64 PeakPagefileUsage;
         }
+
+        [DllImport("psapi.dll", SetLastError = true)]
+        protected static extern bool GetProcessMemoryInfo(IntPtr hProcess, out PROCESS_MEMORY_COUNTERS counters, uint cb);
     }
 }

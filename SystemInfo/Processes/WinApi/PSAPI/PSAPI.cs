@@ -29,16 +29,13 @@ namespace SystemInfo.Processes.WinApi.PSAPI
             return result;
         }
 
-        /// <summary>
-        /// Извлекает идентификатор процесса для каждого объекта процесса в системе.
-        /// </summary>
-        public static string GetProcessImageFileName(IntPtr processHandle)
+        public static string GetModuleFileNameEx(IntPtr processHandle)
         {
             const int SIZE_STRING = 1024;
 
             StringBuilder buffStr = new StringBuilder(SIZE_STRING);
 
-            PsapiDLL.GetProcessImageFileName(processHandle, buffStr, SIZE_STRING);
+            PsapiDLL.GetModuleFileNameEx(processHandle, IntPtr.Zero, buffStr, SIZE_STRING);
 
             var result = buffStr.ToString();
 
@@ -47,7 +44,7 @@ namespace SystemInfo.Processes.WinApi.PSAPI
 
         public static PROCESS_MEMORY_COUNTERS GetProcessMemoryInfo(IntPtr processHandle)
         {
-            PsapiDLL.GetProcessMemoryInfo(processHandle, out PROCESS_MEMORY_COUNTERS processMemoryCounters, 72);
+            PsapiDLL.GetProcessMemoryInfo(processHandle, out PROCESS_MEMORY_COUNTERS processMemoryCounters, PROCESS_MEMORY_COUNTERS_SIZE);
 
             return processMemoryCounters;
         }

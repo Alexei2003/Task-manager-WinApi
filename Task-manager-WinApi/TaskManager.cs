@@ -9,6 +9,7 @@ namespace Task_manager_WinApi
     internal partial class TaskManager : Form
     {
         private ListProcesses listProcesses = new();
+
         private ProcessesColumns processesColumns = new();
         private ProcessesColumnsName[] processesColumnWhitchVisable = new ProcessesColumnsName[]
         {
@@ -31,7 +32,6 @@ namespace Task_manager_WinApi
         };
         public ProcessesColumnsName[] TmpProcessesColumnWhitchVisable { get; set; } = null;
 
-        private int? selectedProcessIndex = null;
         private uint? selectedProcessId = null;
 
         private ChangeVisableColumns subForm = null;
@@ -58,6 +58,7 @@ namespace Task_manager_WinApi
 
             if (TmpProcessesColumnWhitchVisable != null)
             {
+                dvgProcesses.Columns.Clear();
                 processesColumnWhitchVisable = TmpProcessesColumnWhitchVisable;
                 TmpProcessesColumnWhitchVisable = null;
             }
@@ -84,12 +85,14 @@ namespace Task_manager_WinApi
                 dataTable.Rows.Add(data);
             }
 
-            dvgProcesses.Columns.Clear();
             dvgProcesses.DataSource = dataTable;
 
-            for (int i = 0; i < dataTable.Columns.Count; i++)
+            // положение текста
+            for (int i = 0; i < dvgProcesses.Columns.Count; i++)
             {
-                if (dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name))
+                if (dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name) ||
+                   dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.FilePath) ||
+                   dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.UserName))
                 {
                     dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
                 }
@@ -123,32 +126,18 @@ namespace Task_manager_WinApi
         {
             pProceses.Visible = false;
             pGlobalStatistics.Visible = false;
-            pDevicesInfo.Visible = false;
 
             panel.Visible = true;
         }
 
-        private bool IsSelectedProcess(int i)
+        private bool IsSelectedProcess(int index)
         {
-            if (Convert.ToUInt32(dvgProcesses.Rows[i].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString()) == Convert.ToUInt32(selectedProcessId))
+            if (Convert.ToUInt32(dvgProcesses.Rows[index].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString()) == Convert.ToUInt32(selectedProcessId))
             {
-                selectedProcessIndex = i;
-                if (selectedProcessIndex != null)
-                {
-                    dvgProcesses.Rows[Convert.ToInt32(selectedProcessIndex)].Selected = true;
-                }
+                dvgProcesses.Rows[Convert.ToInt32(index)].Selected = true;
                 return true;
             }
             return false;
-        }
-
-        private void dvgProcesses_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex > -1)
-            {
-                selectedProcessIndex = e.RowIndex;
-                selectedProcessId = listProcesses[Convert.ToInt32(selectedProcessIndex)].Id;
-            }
         }
 
         private void bProcesses_Click(object sender, EventArgs e)
@@ -169,13 +158,6 @@ namespace Task_manager_WinApi
             }
         }
 
-        private void bDevicesInfo_Click(object sender, EventArgs e)
-        {
-            if (!pDevicesInfo.Visible)
-            {
-                HideAllPanelsExcept(pDevicesInfo);
-            }
-        }
         private void tUpdate_Tick(object sender, EventArgs e)
         {
             if (pProceses.Visible)
@@ -186,14 +168,9 @@ namespace Task_manager_WinApi
 
         private void bKillProcess_Click(object sender, EventArgs e)
         {
-            if (selectedProcessIndex != null)
+            if (selectedProcessId != null)
             {
-                var strProcessid = dvgProcesses.Rows[Convert.ToInt32(selectedProcessIndex)].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString();
-                var processIndex = listProcesses.GetIndexProcess(Convert.ToUInt32(strProcessid));
-                if (processIndex != null)
-                {
-                    listProcesses[Convert.ToInt32(processIndex)].KillProcess();
-                }
+                listProcesses.KillProcessTree(selectedProcessId.Value);
             }
         }
 
@@ -202,6 +179,14 @@ namespace Task_manager_WinApi
             subForm = new ChangeVisableColumns(processesColumnWhitchVisable, processesColumns, this);
 
             subForm.Visible = true;
+        }
+
+        private void dvgProcesses_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                selectedProcessId = Convert.ToUInt32(dvgProcesses.Rows[e.RowIndex].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value);
+            }
         }
     }
 }

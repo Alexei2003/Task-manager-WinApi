@@ -32,19 +32,15 @@
             dvgProcesses = new DataGridView();
             tUpdate = new System.Windows.Forms.Timer(components);
             pProceses = new Panel();
+            bChangeVisableColumns = new Button();
             bKillProcess = new Button();
             bProcesses = new Button();
             bGlobalStatistics = new Button();
             pGlobalStatistics = new Panel();
             button1 = new Button();
-            pDevicesInfo = new Panel();
-            button2 = new Button();
-            bDevicesInfo = new Button();
-            bChangeVisableColumns = new Button();
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).BeginInit();
             pProceses.SuspendLayout();
             pGlobalStatistics.SuspendLayout();
-            pDevicesInfo.SuspendLayout();
             SuspendLayout();
             // 
             // dvgProcesses
@@ -52,7 +48,6 @@
             dvgProcesses.AllowUserToAddRows = false;
             dvgProcesses.AllowUserToDeleteRows = false;
             dvgProcesses.AllowUserToOrderColumns = true;
-            dvgProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dvgProcesses.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dvgProcesses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dvgProcesses.Location = new Point(10, 10);
@@ -62,9 +57,9 @@
             dvgProcesses.RowHeadersWidth = 5;
             dvgProcesses.RowTemplate.Height = 27;
             dvgProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dvgProcesses.Size = new Size(780, 361);
+            dvgProcesses.Size = new Size(1180, 361);
             dvgProcesses.TabIndex = 0;
-            dvgProcesses.CellContentClick += dvgProcesses_CellContentClick;
+            dvgProcesses.CellClick += dvgProcesses_CellClick;
             // 
             // tUpdate
             // 
@@ -78,8 +73,18 @@
             pProceses.Controls.Add(dvgProcesses);
             pProceses.Location = new Point(0, 50);
             pProceses.Name = "pProceses";
-            pProceses.Size = new Size(800, 450);
+            pProceses.Size = new Size(1200, 450);
             pProceses.TabIndex = 1;
+            // 
+            // bChangeVisableColumns
+            // 
+            bChangeVisableColumns.Location = new Point(116, 388);
+            bChangeVisableColumns.Name = "bChangeVisableColumns";
+            bChangeVisableColumns.Size = new Size(100, 50);
+            bChangeVisableColumns.TabIndex = 7;
+            bChangeVisableColumns.Text = "Скрыть столбцы";
+            bChangeVisableColumns.UseVisualStyleBackColor = true;
+            bChangeVisableColumns.Click += bChangeVisableColumns_Click;
             // 
             // bKillProcess
             // 
@@ -114,9 +119,9 @@
             // pGlobalStatistics
             // 
             pGlobalStatistics.Controls.Add(button1);
-            pGlobalStatistics.Location = new Point(806, 50);
+            pGlobalStatistics.Location = new Point(0, 506);
             pGlobalStatistics.Name = "pGlobalStatistics";
-            pGlobalStatistics.Size = new Size(800, 450);
+            pGlobalStatistics.Size = new Size(1200, 450);
             pGlobalStatistics.TabIndex = 3;
             // 
             // button1
@@ -128,50 +133,11 @@
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
-            // pDevicesInfo
-            // 
-            pDevicesInfo.Controls.Add(button2);
-            pDevicesInfo.Location = new Point(0, 506);
-            pDevicesInfo.Name = "pDevicesInfo";
-            pDevicesInfo.Size = new Size(800, 450);
-            pDevicesInfo.TabIndex = 4;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(407, 153);
-            button2.Name = "button2";
-            button2.Size = new Size(83, 25);
-            button2.TabIndex = 0;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // bDevicesInfo
-            // 
-            bDevicesInfo.Location = new Point(222, 0);
-            bDevicesInfo.Name = "bDevicesInfo";
-            bDevicesInfo.Size = new Size(100, 50);
-            bDevicesInfo.TabIndex = 5;
-            bDevicesInfo.Text = "Устройства";
-            bDevicesInfo.UseVisualStyleBackColor = true;
-            bDevicesInfo.Click += bDevicesInfo_Click;
-            // 
-            // bChangeVisableColumns
-            // 
-            bChangeVisableColumns.Location = new Point(116, 388);
-            bChangeVisableColumns.Name = "bChangeVisableColumns";
-            bChangeVisableColumns.Size = new Size(100, 50);
-            bChangeVisableColumns.TabIndex = 7;
-            bChangeVisableColumns.Text = "Скрыть столбцы";
-            bChangeVisableColumns.UseVisualStyleBackColor = true;
-            bChangeVisableColumns.Click += bChangeVisableColumns_Click;
-            // 
             // TaskManager
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1623, 985);
-            Controls.Add(bDevicesInfo);
-            Controls.Add(pDevicesInfo);
+            ClientSize = new Size(1210, 985);
             Controls.Add(bGlobalStatistics);
             Controls.Add(pGlobalStatistics);
             Controls.Add(bProcesses);
@@ -182,7 +148,6 @@
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).EndInit();
             pProceses.ResumeLayout(false);
             pGlobalStatistics.ResumeLayout(false);
-            pDevicesInfo.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -194,10 +159,7 @@
         private Button bProcesses;
         private Button bGlobalStatistics;
         private Panel pGlobalStatistics;
-        private Panel pDevicesInfo;
-        private Button bDevicesInfo;
         private Button button1;
-        private Button button2;
         private Button bKillProcess;
         private Button bChangeVisableColumns;
     }

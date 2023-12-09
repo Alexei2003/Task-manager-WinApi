@@ -58,11 +58,11 @@ namespace Task_manager_WinApi
                 case ProcessesColumnsName.Name:
                     return $"{process.Name}";
                 case ProcessesColumnsName.FilePath:
-                    return null;
+                    return $"{process.FilePath}";
                 case ProcessesColumnsName.Description:
                     return null;
                 case ProcessesColumnsName.UserName:
-                    return null;
+                    return $"{process.UserName}";
                 case ProcessesColumnsName.Cpu:
                     return null;
                 case ProcessesColumnsName.CountThreads:

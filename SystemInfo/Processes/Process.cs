@@ -3,6 +3,7 @@ using System.Security.Principal;
 using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
+using SystemInfo.Processes.WinApi.THAPI;
 using static SystemInfo.Processes.WinApi.PTAPI.ProcessthreadsapiDLL;
 
 namespace SystemInfo.Processes
@@ -17,7 +18,7 @@ namespace SystemInfo.Processes
 
         public string UserName { get; }
         public int Cpu { get; }
-        public int CountThreads { get; }
+        public int CountThreads { get; private set; } = 0;
         public PSAPI.PROCESS_MEMORY_COUNTERS Memory { get; }
 
 
@@ -54,6 +55,11 @@ namespace SystemInfo.Processes
             Marshal.FreeHGlobal(tokenInfo);
 
             return sid.Translate(typeof(NTAccount)).ToString();
+        }
+
+        public void IncrementThreadCount()
+        {
+            CountThreads++;
         }
 
         public void KillProcess()

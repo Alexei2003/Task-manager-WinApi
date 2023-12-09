@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
@@ -29,6 +28,20 @@ namespace SystemInfo.Processes
                     processes.Add(processesIds[indexIds], new Process(processesIds[indexIds], processHandle));
                 }
             }
+
+            var handleProcessSnap = THAPI.CreateToolhelp32Snapshot(THAPI.Flag.TH32CS_SNAPTHREAD, 0);
+
+            for (var threadEntry32 = THAPI.Thread32First(handleProcessSnap); threadEntry32 != null; threadEntry32 = THAPI.Thread32Next(handleProcessSnap))
+            {
+                if(processes.TryGetValue(threadEntry32.Value.th32OwnerProcessID, out Process process))
+                {
+                    process.IncrementThreadCount();
+                }
+
+            }
+
+            HAPI.CloseHandle(handleProcessSnap);
+
             Count = processes.Count;
         }
 

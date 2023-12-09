@@ -1,4 +1,5 @@
 ﻿using SystemInfo.Processes.WinApi.Новая_папка;
+using static SystemInfo.Processes.WinApi.Новая_папка.Tlhelp32DLL;
 
 namespace SystemInfo.Processes.WinApi.THAPI
 {
@@ -39,6 +40,32 @@ namespace SystemInfo.Processes.WinApi.THAPI
             if (Tlhelp32DLL.Process32Next(snapshotHandle, ref processEntry32))
             {
                 return processEntry32;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static THREADENTRY32? Thread32First(IntPtr snapshotHandle)
+        {
+            var threadEntry32 = new THREADENTRY32();
+            if (Tlhelp32DLL.Thread32First(snapshotHandle, ref threadEntry32))
+            {
+                return threadEntry32;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static THREADENTRY32? Thread32Next(IntPtr snapshotHandle)
+        {
+            var threadEntry32 = new THREADENTRY32();
+            if (Tlhelp32DLL.Thread32Next(snapshotHandle, ref threadEntry32))
+            {
+                return threadEntry32;
             }
             else
             {

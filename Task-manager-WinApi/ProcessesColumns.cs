@@ -66,7 +66,7 @@ namespace Task_manager_WinApi
                 case ProcessesColumnsName.Cpu:
                     return null;
                 case ProcessesColumnsName.CountThreads:
-                    return null;
+                    return $"{process.CountThreads,+10}";
                 case ProcessesColumnsName.PageFaultCount:
                     return $"{process.Memory.PageFaultCount,+10}";
                 case ProcessesColumnsName.PeakWorkingSetSize:

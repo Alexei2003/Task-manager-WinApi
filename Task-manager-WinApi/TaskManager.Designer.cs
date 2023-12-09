@@ -32,6 +32,7 @@
             dvgProcesses = new DataGridView();
             tUpdate = new System.Windows.Forms.Timer(components);
             pProceses = new Panel();
+            tbSearch = new TextBox();
             bChangeVisableColumns = new Button();
             bKillProcess = new Button();
             bProcesses = new Button();
@@ -50,35 +51,45 @@
             dvgProcesses.AllowUserToOrderColumns = true;
             dvgProcesses.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dvgProcesses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dvgProcesses.Location = new Point(10, 10);
+            dvgProcesses.Location = new Point(10, 43);
             dvgProcesses.MultiSelect = false;
             dvgProcesses.Name = "dvgProcesses";
             dvgProcesses.ReadOnly = true;
             dvgProcesses.RowHeadersWidth = 5;
             dvgProcesses.RowTemplate.Height = 27;
             dvgProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dvgProcesses.Size = new Size(1180, 361);
+            dvgProcesses.Size = new Size(1180, 389);
             dvgProcesses.TabIndex = 0;
             dvgProcesses.CellClick += dvgProcesses_CellClick;
             // 
             // tUpdate
             // 
-            tUpdate.Interval = 5000;
+            tUpdate.Interval = 3000;
             tUpdate.Tick += tUpdate_Tick;
             // 
             // pProceses
             // 
+            pProceses.Controls.Add(tbSearch);
             pProceses.Controls.Add(bChangeVisableColumns);
             pProceses.Controls.Add(bKillProcess);
             pProceses.Controls.Add(dvgProcesses);
             pProceses.Location = new Point(0, 50);
             pProceses.Name = "pProceses";
-            pProceses.Size = new Size(1200, 450);
+            pProceses.Size = new Size(1200, 500);
             pProceses.TabIndex = 1;
+            // 
+            // tbSearch
+            // 
+            tbSearch.Location = new Point(416, 12);
+            tbSearch.Name = "tbSearch";
+            tbSearch.PlaceholderText = "Поиск по имени, id";
+            tbSearch.Size = new Size(324, 25);
+            tbSearch.TabIndex = 5;
+            tbSearch.KeyUp += tbSearch_KeyUp;
             // 
             // bChangeVisableColumns
             // 
-            bChangeVisableColumns.Location = new Point(116, 388);
+            bChangeVisableColumns.Location = new Point(116, 438);
             bChangeVisableColumns.Name = "bChangeVisableColumns";
             bChangeVisableColumns.Size = new Size(100, 50);
             bChangeVisableColumns.TabIndex = 7;
@@ -88,7 +99,7 @@
             // 
             // bKillProcess
             // 
-            bKillProcess.Location = new Point(10, 388);
+            bKillProcess.Location = new Point(10, 438);
             bKillProcess.Name = "bKillProcess";
             bKillProcess.Size = new Size(100, 50);
             bKillProcess.TabIndex = 6;
@@ -119,7 +130,7 @@
             // pGlobalStatistics
             // 
             pGlobalStatistics.Controls.Add(button1);
-            pGlobalStatistics.Location = new Point(0, 506);
+            pGlobalStatistics.Location = new Point(0, 556);
             pGlobalStatistics.Name = "pGlobalStatistics";
             pGlobalStatistics.Size = new Size(1200, 450);
             pGlobalStatistics.TabIndex = 3;
@@ -137,7 +148,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1210, 985);
+            ClientSize = new Size(1210, 1021);
             Controls.Add(bGlobalStatistics);
             Controls.Add(pGlobalStatistics);
             Controls.Add(bProcesses);
@@ -147,6 +158,7 @@
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dvgProcesses).EndInit();
             pProceses.ResumeLayout(false);
+            pProceses.PerformLayout();
             pGlobalStatistics.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -162,5 +174,6 @@
         private Button button1;
         private Button bKillProcess;
         private Button bChangeVisableColumns;
+        private TextBox tbSearch;
     }
 }

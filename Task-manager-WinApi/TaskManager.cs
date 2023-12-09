@@ -36,6 +36,8 @@ namespace Task_manager_WinApi
 
         private ChangeVisableColumns subForm = null;
 
+        private string? searchProcess = null;
+
         public TaskManager()
         {
             InitializeComponent();
@@ -78,6 +80,12 @@ namespace Task_manager_WinApi
             foreach (var process in listProcesses)
             {
                 index = 0;
+
+                if (searchProcess != null && !process.Id.ToString().Contains(searchProcess) && !process.Name.ToUpper().Contains(searchProcess.ToUpper()))
+                {
+                    continue;
+                }
+
                 foreach (var indexColumn in processesColumnWhitchVisable)
                 {
                     data[index++] = processesColumns.GetColumeValue(indexColumn, process);
@@ -87,38 +95,42 @@ namespace Task_manager_WinApi
 
             dvgProcesses.DataSource = dataTable;
 
-            // положение текста
-            for (int i = 0; i < dvgProcesses.Columns.Count; i++)
+            if (dataTable.Rows.Count > 0)
             {
-                if (dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name) ||
-                   dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.FilePath) ||
-                   dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.UserName))
-                {
-                    dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
-                }
-                else
-                {
-                    dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
-                }
-            }
 
-            if (sortedColumn != null && dvgProcesses.Columns.Contains(sortedColumn.Name) && sortOrder != SortOrder.None)
-            {
-                dvgProcesses.Sort(dvgProcesses.Columns[sortedColumn.Name], (ListSortDirection)sortOrder - 1);
-            }
-
-            for (int i = 0; i < dvgProcesses.Rows.Count; i++)
-            {
-                if (IsSelectedProcess(i))
+                // положение текста
+                for (int i = 0; i < dvgProcesses.Columns.Count; i++)
                 {
-                    break;
+                    if (dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name) ||
+                       dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.FilePath) ||
+                       dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.UserName))
+                    {
+                        dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
+                    }
+                    else
+                    {
+                        dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+                    }
                 }
-            }
 
-            if (IndexFirstRowOnDisplay > -1 && IndexFirstColumnOnDisplay > -1)
-            {
-                dvgProcesses.FirstDisplayedScrollingRowIndex = IndexFirstRowOnDisplay;
-                dvgProcesses.FirstDisplayedScrollingColumnIndex = IndexFirstColumnOnDisplay;
+                if (sortedColumn != null && dvgProcesses.Columns.Contains(sortedColumn.Name) && sortOrder != SortOrder.None)
+                {
+                    dvgProcesses.Sort(dvgProcesses.Columns[sortedColumn.Name], (ListSortDirection)sortOrder - 1);
+                }
+
+                for (int i = 0; i < dvgProcesses.Rows.Count; i++)
+                {
+                    if (IsSelectedProcess(i))
+                    {
+                        break;
+                    }
+                }
+
+                if (IndexFirstRowOnDisplay > -1 && IndexFirstColumnOnDisplay > -1)
+                {
+                    dvgProcesses.FirstDisplayedScrollingRowIndex = IndexFirstRowOnDisplay;
+                    dvgProcesses.FirstDisplayedScrollingColumnIndex = IndexFirstColumnOnDisplay;
+                }
             }
         }
 
@@ -186,6 +198,16 @@ namespace Task_manager_WinApi
             if (e.RowIndex > -1)
             {
                 selectedProcessId = Convert.ToUInt32(dvgProcesses.Rows[e.RowIndex].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value);
+            }
+        }
+
+        private void tbSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            searchProcess = tbSearch.Text;
+
+            if (searchProcess == "")
+            {
+                searchProcess = null;
             }
         }
     }

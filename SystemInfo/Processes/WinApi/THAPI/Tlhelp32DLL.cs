@@ -34,6 +34,30 @@ namespace SystemInfo.Processes.WinApi.Новая_папка
                 dwSize = (uint)Marshal.SizeOf(typeof(PROCESSENTRY32));
             }
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct THREADENTRY32
+        {
+            public uint dwSize;
+            public uint cntUsage;
+            public uint th32ThreadID;
+            public uint th32OwnerProcessID;
+            public uint tpBasePri;
+            public uint tpDeltaPri;
+            public uint dwFlags;
+
+            public THREADENTRY32()
+            {
+                dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32));
+            }
+        }
+
+        [DllImport("kernel32.dll")]
+        public static extern bool Thread32First(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool Thread32Next(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+
     }
 }
 

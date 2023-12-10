@@ -49,12 +49,13 @@ namespace Task_manager_WinApi
             Count = processesColumnsNames.Length;
         }
 
+        const int SHIFT = 8;
         public object GetColumeValue(ProcessesColumnsName name, Process process)
         {
             switch (name)
             {
                 case ProcessesColumnsName.Id:
-                    return $"{process.Id,+10}";
+                    return $"{process.Id,+SHIFT}";
                 case ProcessesColumnsName.Name:
                     return $"{process.Name}";
                 case ProcessesColumnsName.FilePath:
@@ -66,25 +67,25 @@ namespace Task_manager_WinApi
                 case ProcessesColumnsName.Cpu:
                     return null;
                 case ProcessesColumnsName.CountThreads:
-                    return $"{process.CountThreads,+10}";
+                    return $"{process.CountThreads,+SHIFT}";
                 case ProcessesColumnsName.PageFaultCount:
-                    return $"{process.Memory.PageFaultCount,+10}";
+                    return $"{process.Memory.PageFaultCount,+SHIFT}";
                 case ProcessesColumnsName.PeakWorkingSetSize:
-                    return $"{process.Memory.PeakWorkingSetSize / 1024,+10}";
+                    return $"{process.Memory.PeakWorkingSetSize / 1024,+SHIFT}";
                 case ProcessesColumnsName.WorkingSetSize:
-                    return $"{process.Memory.WorkingSetSize / 1024,+10}";
+                    return $"{process.Memory.WorkingSetSize / 1024,+SHIFT}";
                 case ProcessesColumnsName.QuotaPeakPagedPoolUsage:
-                    return $"{process.Memory.QuotaPeakPagedPoolUsage / 1024,+10}";
+                    return $"{process.Memory.QuotaPeakPagedPoolUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.QuotaPagedPoolUsage:
-                    return $"{process.Memory.QuotaPagedPoolUsage / 1024,+10}";
+                    return $"{process.Memory.QuotaPagedPoolUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.QuotaPeakNonPagedPoolUsage:
-                    return $"{process.Memory.QuotaPeakNonPagedPoolUsage / 1024,+10}";
+                    return $"{process.Memory.QuotaPeakNonPagedPoolUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.QuotaNonPagedPoolUsage:
-                    return $"{process.Memory.QuotaNonPagedPoolUsage / 1024,+10}";
+                    return $"{process.Memory.QuotaNonPagedPoolUsage / 1024,+    SHIFT}";
                 case ProcessesColumnsName.PagefileUsage:
-                    return $"{process.Memory.PagefileUsage / 1024,+10}";
+                    return $"{process.Memory.PagefileUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.PeakPagefileUsage:
-                    return $"{process.Memory.PeakPagefileUsage / 1024,+10}";
+                    return $"{process.Memory.PeakPagefileUsage / 1024,+SHIFT}";
                 default:
                     return null;
             }

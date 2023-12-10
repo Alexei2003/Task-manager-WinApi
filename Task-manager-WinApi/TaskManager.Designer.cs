@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            dvgProcesses = new DataGridView();
+            dgvProcesses = new DataGridView();
             tUpdate = new System.Windows.Forms.Timer(components);
             pProceses = new Panel();
             tbSearch = new TextBox();
@@ -38,29 +38,27 @@
             bProcesses = new Button();
             bGlobalStatistics = new Button();
             pGlobalStatistics = new Panel();
-            button1 = new Button();
-            ((System.ComponentModel.ISupportInitialize)dvgProcesses).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProcesses).BeginInit();
             pProceses.SuspendLayout();
-            pGlobalStatistics.SuspendLayout();
             SuspendLayout();
             // 
-            // dvgProcesses
+            // dgvProcesses
             // 
-            dvgProcesses.AllowUserToAddRows = false;
-            dvgProcesses.AllowUserToDeleteRows = false;
-            dvgProcesses.AllowUserToOrderColumns = true;
-            dvgProcesses.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dvgProcesses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dvgProcesses.Location = new Point(10, 43);
-            dvgProcesses.MultiSelect = false;
-            dvgProcesses.Name = "dvgProcesses";
-            dvgProcesses.ReadOnly = true;
-            dvgProcesses.RowHeadersWidth = 5;
-            dvgProcesses.RowTemplate.Height = 27;
-            dvgProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dvgProcesses.Size = new Size(1180, 389);
-            dvgProcesses.TabIndex = 0;
-            dvgProcesses.CellClick += dvgProcesses_CellClick;
+            dgvProcesses.AllowUserToAddRows = false;
+            dgvProcesses.AllowUserToDeleteRows = false;
+            dgvProcesses.AllowUserToOrderColumns = true;
+            dgvProcesses.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvProcesses.BorderStyle = BorderStyle.None;
+            dgvProcesses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProcesses.Location = new Point(10, 43);
+            dgvProcesses.MultiSelect = false;
+            dgvProcesses.Name = "dgvProcesses";
+            dgvProcesses.ReadOnly = true;
+            dgvProcesses.RowHeadersWidth = 5;
+            dgvProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProcesses.Size = new Size(1180, 389);
+            dgvProcesses.TabIndex = 0;
+            dgvProcesses.CellClick += dvgProcesses_CellClick;
             // 
             // tUpdate
             // 
@@ -69,11 +67,12 @@
             // 
             // pProceses
             // 
+            pProceses.BorderStyle = BorderStyle.FixedSingle;
             pProceses.Controls.Add(tbSearch);
             pProceses.Controls.Add(bChangeVisableColumns);
             pProceses.Controls.Add(bKillProcess);
-            pProceses.Controls.Add(dvgProcesses);
-            pProceses.Location = new Point(0, 50);
+            pProceses.Controls.Add(dgvProcesses);
+            pProceses.Location = new Point(10, 50);
             pProceses.Name = "pProceses";
             pProceses.Size = new Size(1200, 500);
             pProceses.TabIndex = 1;
@@ -129,26 +128,17 @@
             // 
             // pGlobalStatistics
             // 
-            pGlobalStatistics.Controls.Add(button1);
-            pGlobalStatistics.Location = new Point(0, 556);
+            pGlobalStatistics.BorderStyle = BorderStyle.FixedSingle;
+            pGlobalStatistics.Location = new Point(10, 560);
             pGlobalStatistics.Name = "pGlobalStatistics";
-            pGlobalStatistics.Size = new Size(1200, 450);
+            pGlobalStatistics.Size = new Size(1200, 500);
             pGlobalStatistics.TabIndex = 3;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(266, 230);
-            button1.Name = "button1";
-            button1.Size = new Size(83, 25);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
             // 
             // TaskManager
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1210, 1021);
+            ClientSize = new Size(1219, 1059);
             Controls.Add(bGlobalStatistics);
             Controls.Add(pGlobalStatistics);
             Controls.Add(bProcesses);
@@ -156,22 +146,20 @@
             DoubleBuffered = true;
             Name = "TaskManager";
             Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)dvgProcesses).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProcesses).EndInit();
             pProceses.ResumeLayout(false);
             pProceses.PerformLayout();
-            pGlobalStatistics.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView dvgProcesses;
+        private DataGridView dgvProcesses;
         private System.Windows.Forms.Timer tUpdate;
         private Panel pProceses;
         private Button bProcesses;
         private Button bGlobalStatistics;
         private Panel pGlobalStatistics;
-        private Button button1;
         private Button bKillProcess;
         private Button bChangeVisableColumns;
         private TextBox tbSearch;

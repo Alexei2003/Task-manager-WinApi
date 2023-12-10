@@ -46,35 +46,41 @@ namespace Task_manager_WinApi
 
             HideAllPanelsExcept(pProceses);
 
-            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dvgProcesses, new object[] { true });
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dgvProcesses, new object[] { true });
+            
         }
 
         private void ProcessesUpdate()
         {
-            var sortedColumn = dvgProcesses.SortedColumn;
-            var sortOrder = dvgProcesses.SortOrder;
-            int IndexFirstRowOnDisplay = dvgProcesses.FirstDisplayedScrollingRowIndex;
-            int IndexFirstColumnOnDisplay = dvgProcesses.FirstDisplayedScrollingColumnIndex;
+            var sortedColumn = dgvProcesses.SortedColumn;
+            var sortOrder = dgvProcesses.SortOrder;
+            int indexFirstRowOnDisplay = dgvProcesses.FirstDisplayedScrollingRowIndex;
+            int offsetColumOnDisplay = dgvProcesses.HorizontalScrollingOffset;
 
             listProcesses = new ListProcesses();
 
+            // Скрытие колонок 
             if (TmpProcessesColumnWhitchVisable != null)
             {
-                dvgProcesses.Columns.Clear();
+                dgvProcesses.Columns.Clear();
                 processesColumnWhitchVisable = TmpProcessesColumnWhitchVisable;
                 TmpProcessesColumnWhitchVisable = null;
             }
 
+            // Создание колонок в dataTable 
             var dataTable = new DataTable();
             foreach (var indexColumn in processesColumnWhitchVisable)
             {
                 dataTable.Columns.Add(processesColumns.GetColumeName(indexColumn));
             }
 
+            // Простановка не изменений текста
             for (int i = 0; i < dataTable.Columns.Count; i++)
             {
                 dataTable.Columns[i].ReadOnly = true;
             }
+
+            // Занос данныъ в таблицу
             int index;
             object[] data = new object[dataTable.Columns.Count];
             foreach (var process in listProcesses)
@@ -93,32 +99,33 @@ namespace Task_manager_WinApi
                 dataTable.Rows.Add(data);
             }
 
-            dvgProcesses.DataSource = dataTable;
+            // Передача данных в dvg
+            dgvProcesses.DataSource = dataTable;
 
             if (dataTable.Rows.Count > 0)
             {
 
                 // положение текста
-                for (int i = 0; i < dvgProcesses.Columns.Count; i++)
+                for (int i = 0; i < dgvProcesses.Columns.Count; i++)
                 {
-                    if (dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name) ||
-                       dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.FilePath) ||
-                       dvgProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.UserName))
+                    if (dgvProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.Name) ||
+                       dgvProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.FilePath) ||
+                       dgvProcesses.Columns[i].Name == processesColumns.GetColumeName(ProcessesColumnsName.UserName))
                     {
-                        dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
+                        dgvProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
                     }
                     else
                     {
-                        dvgProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+                        dgvProcesses.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
                     }
                 }
 
-                if (sortedColumn != null && dvgProcesses.Columns.Contains(sortedColumn.Name) && sortOrder != SortOrder.None)
+                if (sortedColumn != null && dgvProcesses.Columns.Contains(sortedColumn.Name) && sortOrder != SortOrder.None)
                 {
-                    dvgProcesses.Sort(dvgProcesses.Columns[sortedColumn.Name], (ListSortDirection)sortOrder - 1);
+                    dgvProcesses.Sort(dgvProcesses.Columns[sortedColumn.Name], (ListSortDirection)sortOrder - 1);
                 }
 
-                for (int i = 0; i < dvgProcesses.Rows.Count; i++)
+                for (int i = 0; i < dgvProcesses.Rows.Count; i++)
                 {
                     if (IsSelectedProcess(i))
                     {
@@ -126,12 +133,17 @@ namespace Task_manager_WinApi
                     }
                 }
 
-                if (IndexFirstRowOnDisplay > -1 && IndexFirstColumnOnDisplay > -1)
+                if (indexFirstRowOnDisplay > -1 && offsetColumOnDisplay > -1)
                 {
-                    dvgProcesses.FirstDisplayedScrollingRowIndex = IndexFirstRowOnDisplay;
-                    dvgProcesses.FirstDisplayedScrollingColumnIndex = IndexFirstColumnOnDisplay;
+                    dgvProcesses.FirstDisplayedScrollingRowIndex = indexFirstRowOnDisplay;
+                    dgvProcesses.HorizontalScrollingOffset = offsetColumOnDisplay;
                 }
             }
+        }
+
+        private void GlobalStatisticsUpdate()
+        {
+
         }
 
         private void HideAllPanelsExcept(Panel panel)
@@ -144,9 +156,9 @@ namespace Task_manager_WinApi
 
         private bool IsSelectedProcess(int index)
         {
-            if (Convert.ToUInt32(dvgProcesses.Rows[index].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString()) == Convert.ToUInt32(selectedProcessId))
+            if (Convert.ToUInt32(dgvProcesses.Rows[index].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value.ToString()) == Convert.ToUInt32(selectedProcessId))
             {
-                dvgProcesses.Rows[Convert.ToInt32(index)].Selected = true;
+                dgvProcesses.Rows[Convert.ToInt32(index)].Selected = true;
                 return true;
             }
             return false;
@@ -166,6 +178,8 @@ namespace Task_manager_WinApi
         {
             if (!pGlobalStatistics.Visible)
             {
+                GlobalStatisticsUpdate();
+
                 HideAllPanelsExcept(pGlobalStatistics);
             }
         }
@@ -175,6 +189,10 @@ namespace Task_manager_WinApi
             if (pProceses.Visible)
             {
                 ProcessesUpdate();
+            }
+            if (pGlobalStatistics.Visible)
+            {
+                GlobalStatisticsUpdate();
             }
         }
 
@@ -197,7 +215,7 @@ namespace Task_manager_WinApi
         {
             if (e.RowIndex > -1)
             {
-                selectedProcessId = Convert.ToUInt32(dvgProcesses.Rows[e.RowIndex].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value);
+                selectedProcessId = Convert.ToUInt32(dgvProcesses.Rows[e.RowIndex].Cells[processesColumns.GetColumeName(ProcessesColumnsName.Id)].Value);
             }
         }
 

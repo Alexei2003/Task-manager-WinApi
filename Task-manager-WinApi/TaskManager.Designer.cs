@@ -38,6 +38,8 @@
             bProcesses = new Button();
             bGlobalStatistics = new Button();
             pGlobalStatistics = new Panel();
+            button1 = new Button();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvProcesses).BeginInit();
             pProceses.SuspendLayout();
             SuspendLayout();
@@ -62,7 +64,7 @@
             // 
             // tUpdate
             // 
-            tUpdate.Interval = 3000;
+            tUpdate.Interval = 1000;
             tUpdate.Tick += tUpdate_Tick;
             // 
             // pProceses
@@ -134,11 +136,33 @@
             pGlobalStatistics.Size = new Size(1200, 500);
             pGlobalStatistics.TabIndex = 3;
             // 
+            // button1
+            // 
+            button1.Location = new Point(845, 8);
+            button1.Name = "button1";
+            button1.Size = new Size(83, 25);
+            button1.TabIndex = 5;
+            button1.Text = "en";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(952, 11);
+            button2.Name = "button2";
+            button2.Size = new Size(83, 25);
+            button2.TabIndex = 6;
+            button2.Text = "ru";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // TaskManager
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1219, 1059);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Controls.Add(bGlobalStatistics);
             Controls.Add(pGlobalStatistics);
             Controls.Add(bProcesses);
@@ -163,5 +187,7 @@
         private Button bKillProcess;
         private Button bChangeVisableColumns;
         private TextBox tbSearch;
+        private Button button1;
+        private Button button2;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using SystemInfo.Processes.WinApi.Новая_папка;
-using static SystemInfo.Processes.WinApi.Новая_папка.Tlhelp32DLL;
 
 namespace SystemInfo.Processes.WinApi.THAPI
 {
@@ -36,7 +35,7 @@ namespace SystemInfo.Processes.WinApi.THAPI
 
         public static PROCESSENTRY32? Process32Next(IntPtr snapshotHandle)
         {
-            PROCESSENTRY32 processEntry32 = new PROCESSENTRY32();
+            var processEntry32 = new PROCESSENTRY32();
             if (Tlhelp32DLL.Process32Next(snapshotHandle, ref processEntry32))
             {
                 return processEntry32;

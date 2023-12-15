@@ -18,29 +18,32 @@ namespace SystemInfo.Processes
 
             processes = new Dictionary<uint, Process>();
 
-            IntPtr processHandle;
-
-            for (int indexIds = 0; indexIds < processesIds.Length; indexIds++)
+            if (processesIds != null)
             {
-                processHandle = PTAPI.OpenProcess(PTAPI.ProcessDesiredAccess.PROCESS_ALL_ACCESS, false, processesIds[indexIds]);
-                if (processHandle != IntPtr.Zero)
-                {
-                    processes.Add(processesIds[indexIds], new Process(processesIds[indexIds], processHandle));
-                }
-            }
+                IntPtr processHandle;
 
-            var handleProcessSnap = THAPI.CreateToolhelp32Snapshot(THAPI.Flag.TH32CS_SNAPTHREAD, 0);
-
-            for (var threadEntry32 = THAPI.Thread32First(handleProcessSnap); threadEntry32 != null; threadEntry32 = THAPI.Thread32Next(handleProcessSnap))
-            {
-                if(processes.TryGetValue(threadEntry32.Value.th32OwnerProcessID, out Process process))
+                for (int indexIds = 0; indexIds < processesIds.Length; indexIds++)
                 {
-                    process.IncrementThreadCount();
+                    processHandle = PTAPI.OpenProcess(PTAPI.ProcessDesiredAccess.PROCESS_ALL_ACCESS, false, processesIds[indexIds]);
+                    if (processHandle != IntPtr.Zero)
+                    {
+                        processes.Add(processesIds[indexIds], new Process(processesIds[indexIds], processHandle));
+                    }
                 }
 
-            }
+                var handleProcessSnap = THAPI.CreateToolhelp32Snapshot(THAPI.Flag.TH32CS_SNAPTHREAD, 0);
 
-            HAPI.CloseHandle(handleProcessSnap);
+                for (var threadEntry32 = THAPI.Thread32First(handleProcessSnap); threadEntry32 != null; threadEntry32 = THAPI.Thread32Next(handleProcessSnap))
+                {
+                    if (processes.TryGetValue(threadEntry32.Value.th32OwnerProcessID, out Process process))
+                    {
+                        process.IncrementThreadCount();
+                    }
+
+                }
+
+                HAPI.CloseHandle(handleProcessSnap);
+            }
 
             Count = processes.Count;
         }

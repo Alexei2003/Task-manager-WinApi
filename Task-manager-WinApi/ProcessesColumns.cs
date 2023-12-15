@@ -1,4 +1,8 @@
-﻿using SystemInfo.Processes;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using SystemInfo.Processes;
+using Task_manager_WinApi.Language;
 
 namespace Task_manager_WinApi
 {
@@ -23,34 +27,18 @@ namespace Task_manager_WinApi
             PagefileUsage,
             PeakPagefileUsage
         }
-        private string[] processesColumnsNames = new string[]
-        {
-            "Id",
-            "Name",
-            "FilePath",
-            "Description",
-            "UserName",
-            "Cpu",
-            "CountThreads",
-            "PageFaultCount",
-            "PeakWorkingSetSize(KB)",
-            "WorkingSetSize(KB)",
-            "QuotaPeakPagedPoolUsage(KB)",
-            "QuotaPagedPoolUsage(KB)",
-            "QuotaPeakNonPagedPoolUsage(KB)",
-            "QuotaNonPagedPoolUsage(KB)",
-            "PagefileUsage(KB)",
-            "PeakPagefileUsage(KB)"
-        };
+        private Dictionary<ProcessesColumnsName, string> processesColumnsNames;
 
         public int Count { get; }
-        public ProcessesColumns()
+        public ProcessesColumns(Localization.Language language)
         {
-            Count = processesColumnsNames.Length;
+            var str = File.ReadAllText($"Language\\{Localization.GetLanguageName(language)}\\ProcessesColumnsNames.txt");
+            processesColumnsNames = JsonSerializer.Deserialize<Dictionary<ProcessesColumnsName, string>>(str);
+            Count = processesColumnsNames.Count;
         }
 
         const int SHIFT = 8;
-        public object GetColumeValue(ProcessesColumnsName name, Process process)
+        public static object GetColumeValue(ProcessesColumnsName name, Process process)
         {
             switch (name)
             {
@@ -81,7 +69,7 @@ namespace Task_manager_WinApi
                 case ProcessesColumnsName.QuotaPeakNonPagedPoolUsage:
                     return $"{process.Memory.QuotaPeakNonPagedPoolUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.QuotaNonPagedPoolUsage:
-                    return $"{process.Memory.QuotaNonPagedPoolUsage / 1024,+    SHIFT}";
+                    return $"{process.Memory.QuotaNonPagedPoolUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.PagefileUsage:
                     return $"{process.Memory.PagefileUsage / 1024,+SHIFT}";
                 case ProcessesColumnsName.PeakPagefileUsage:
@@ -93,11 +81,11 @@ namespace Task_manager_WinApi
 
         public string? GetColumeName(ProcessesColumnsName name)
         {
-            if (processesColumnsNames.Length <= Convert.ToInt32(name))
+            if (processesColumnsNames.TryGetValue(name, out var columeName))
             {
-                return null;
+                return columeName;
             }
-            return processesColumnsNames[Convert.ToInt32(name)];
+            return null;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace SystemInfo.Processes.WinApi.PSAPI
         /// <summary>
         /// Извлекает идентификатор процесса для каждого объекта процесса в системе.
         /// </summary>
-        public static uint[] EnumProcesses()
+        public static uint[]? EnumProcesses()
         {
             const uint COUNT_PROCESS = 100000;
 

@@ -1,7 +1,9 @@
 using System.ComponentModel;
 using System.Data;
 using System.Reflection;
+using System.Text.Json;
 using SystemInfo.Processes;
+using Task_manager_WinApi.Language;
 using static Task_manager_WinApi.ProcessesColumns;
 
 namespace Task_manager_WinApi
@@ -10,9 +12,9 @@ namespace Task_manager_WinApi
     {
         private ListProcesses listProcesses = new();
 
-        private ProcessesColumns processesColumns = new();
-        private ProcessesColumnsName[] processesColumnWhitchVisable = new ProcessesColumnsName[]
-        {
+        private ProcessesColumns processesColumns;
+        private ProcessesColumnsName[] processesColumnWhitchVisable =
+        [
             ProcessesColumnsName.Id,
             ProcessesColumnsName.Name,
             ProcessesColumnsName.FilePath,
@@ -29,17 +31,19 @@ namespace Task_manager_WinApi
             ProcessesColumnsName.QuotaNonPagedPoolUsage,
             ProcessesColumnsName.PagefileUsage,
             ProcessesColumnsName.PeakPagefileUsage
-        };
-        public ProcessesColumnsName[] TmpProcessesColumnWhitchVisable { get; set; } = null;
+        ];
+        public ProcessesColumnsName[]? TmpProcessesColumnWhitchVisable { get; set; } = null;
 
         private uint? selectedProcessId = null;
 
-        private ChangeVisableColumns subForm = null;
+        private ChangeVisableColumns? subForm = null;
 
-        private string? searchProcess = null;
+        private string? searchProcess;
 
         public TaskManager()
         {
+            ChangeLanguage(Localization.Language.ru);
+
             InitializeComponent();
             ProcessesUpdate();
             tUpdate.Start();
@@ -47,7 +51,6 @@ namespace Task_manager_WinApi
             HideAllPanelsExcept(pProceses);
 
             typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dgvProcesses, new object[] { true });
-            
         }
 
         private void ProcessesUpdate()
@@ -94,7 +97,7 @@ namespace Task_manager_WinApi
 
                 foreach (var indexColumn in processesColumnWhitchVisable)
                 {
-                    data[index++] = processesColumns.GetColumeValue(indexColumn, process);
+                    data[index++] = GetColumeValue(indexColumn, process);
                 }
                 dataTable.Rows.Add(data);
             }
@@ -135,7 +138,10 @@ namespace Task_manager_WinApi
 
                 if (indexFirstRowOnDisplay > -1 && offsetColumOnDisplay > -1)
                 {
-                    dgvProcesses.FirstDisplayedScrollingRowIndex = indexFirstRowOnDisplay;
+                    if (dgvProcesses.Rows.Count > indexFirstRowOnDisplay)
+                    {
+                        dgvProcesses.FirstDisplayedScrollingRowIndex = indexFirstRowOnDisplay;
+                    }
                     dgvProcesses.HorizontalScrollingOffset = offsetColumOnDisplay;
                 }
             }
@@ -162,6 +168,20 @@ namespace Task_manager_WinApi
                 return true;
             }
             return false;
+        }
+
+        private void ChangeLanguage(Localization.Language language)
+        {
+            processesColumns = new(language);
+
+            var str = File.ReadAllText($"Language\\{Localization.GetLanguageName(language)}\\TextGui.txt");
+            var textGui = JsonSerializer.Deserialize<TextGui>(str);
+
+            bKillProcess.Text = textGui.bKillProcess;
+            bChangeVisableColumns.Text = textGui.bChangeVisableColumns;
+            tbSearch.PlaceholderText = textGui.tbSearch;
+            bProcesses.Text = textGui.bProcesses;
+            bGlobalStatistics.Text = textGui.bGlobalStatistics;
         }
 
         private void bProcesses_Click(object sender, EventArgs e)
@@ -227,6 +247,16 @@ namespace Task_manager_WinApi
             {
                 searchProcess = null;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ChangeLanguage(Localization.Language.en);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ChangeLanguage(Localization.Language.ru);
         }
     }
 }

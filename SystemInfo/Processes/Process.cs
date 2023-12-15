@@ -3,7 +3,6 @@ using System.Security.Principal;
 using SystemInfo.Processes.WinApi.HAPI;
 using SystemInfo.Processes.WinApi.PSAPI;
 using SystemInfo.Processes.WinApi.PTAPI;
-using SystemInfo.Processes.WinApi.THAPI;
 using static SystemInfo.Processes.WinApi.PTAPI.ProcessthreadsapiDLL;
 
 namespace SystemInfo.Processes

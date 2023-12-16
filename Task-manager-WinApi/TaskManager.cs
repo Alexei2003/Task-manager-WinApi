@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Reflection;
 using System.Text.Json;
-using SystemInfo.Processes;
+using SystemInfo.SystemDate.Processes;
 using Task_manager_WinApi.Language;
 using static Task_manager_WinApi.ProcessesColumns;
 
@@ -18,7 +18,6 @@ namespace Task_manager_WinApi
             ProcessesColumnsName.Id,
             ProcessesColumnsName.Name,
             ProcessesColumnsName.FilePath,
-            ProcessesColumnsName.Description,
             ProcessesColumnsName.UserName,
             ProcessesColumnsName.Cpu,
             ProcessesColumnsName.CountThreads,
@@ -172,8 +171,18 @@ namespace Task_manager_WinApi
 
         private void ChangeLanguage(Localization.Language language)
         {
-            processesColumns = new(language);
+            ChangeLanguageProcessesColumns(language);
 
+            //ChangeLanguageTextGui(language);
+        }
+
+        private void ChangeLanguageProcessesColumns(Localization.Language language)
+        {
+            processesColumns = new(language);
+        }
+
+        private void ChangeLanguageTextGui(Localization.Language language)
+        {
             var str = File.ReadAllText($"Language\\{Localization.GetLanguageName(language)}\\TextGui.txt");
             var textGui = JsonSerializer.Deserialize<TextGui>(str);
 

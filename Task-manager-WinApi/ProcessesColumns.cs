@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using SystemInfo.Processes;
+using SystemInfo.SystemDate.Processes;
 using Task_manager_WinApi.Language;
 
 namespace Task_manager_WinApi
@@ -13,7 +13,6 @@ namespace Task_manager_WinApi
             Id,
             Name,
             FilePath,
-            Description,
             UserName,
             Cpu,
             CountThreads,
@@ -48,12 +47,10 @@ namespace Task_manager_WinApi
                     return $"{process.Name}";
                 case ProcessesColumnsName.FilePath:
                     return $"{process.FilePath}";
-                case ProcessesColumnsName.Description:
-                    return null;
                 case ProcessesColumnsName.UserName:
                     return $"{process.UserName}";
                 case ProcessesColumnsName.Cpu:
-                    return null;
+                    return $"{process.Cpu}";
                 case ProcessesColumnsName.CountThreads:
                     return $"{process.CountThreads,+SHIFT}";
                 case ProcessesColumnsName.PageFaultCount:

@@ -174,11 +174,11 @@ namespace SystemInfo.Processes.WinApi.PTAPI
         {
             ProcessthreadsapiDLL.GetSystemTimes(out ProcessthreadsapiDLL.FILETIME IdleTimeStruct, out ProcessthreadsapiDLL.FILETIME KernelTimeStruct, out ProcessthreadsapiDLL.FILETIME UserTimeStruct);
 
-            //UInt64 IdleTime = ((UInt64)IdleTimeStruct.dwHighDateTime << 32) | IdleTimeStruct.dwLowDateTime;
+            UInt64 IdleTime = ((UInt64)IdleTimeStruct.dwHighDateTime << 32) | IdleTimeStruct.dwLowDateTime;
             UInt64 KernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | KernelTimeStruct.dwLowDateTime;
             UInt64 UserTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | UserTimeStruct.dwLowDateTime;
 
-            return KernelTime + UserTime;   
+            return IdleTime + KernelTime + UserTime;   
         }
 
         public static UInt64 GetSystemTimesUse()

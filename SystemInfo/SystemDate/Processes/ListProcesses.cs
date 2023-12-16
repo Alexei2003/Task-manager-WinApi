@@ -25,71 +25,82 @@ namespace SystemInfo.SystemDate.Processes
 
             if (processesIds != null)
             {
-                // Получение Handles
-                nint processHandle;
-                foreach (uint indexIds in processesIds)
-                {
-                    processHandle = PTAPI.OpenProcess(PTAPI.ProcessDesiredAccess.PROCESS_ALL_ACCESS, false, indexIds);
-                    if (processHandle != nint.Zero)
-                    {
-                        processes.Add(indexIds, new Process(indexIds, processHandle));
-                    }
-                }
+                CalcProcessHandle(processesIds);
 
-                var handleProcessSnap = THAPI.CreateToolhelp32Snapshot(THAPI.Flag.TH32CS_SNAPTHREAD, 0);
+                CalcThreadUse();
 
-                // Подсчет потоков
-                for (var threadEntry32 = THAPI.Thread32First(handleProcessSnap); threadEntry32 != null; threadEntry32 = THAPI.Thread32Next(handleProcessSnap))
-                {
-                    if (processes.TryGetValue(threadEntry32.Value.th32OwnerProcessID, out Process process))
-                    {
-                        process.IncrementThreadCount();
-                    }
-
-                }
-
-                var processesTime = new ProcessTime[processes.Count];
-
-                // Подсчет 1вого системного времени процесса
-                var systemTime1 = PTAPI.GetSystemTimesAll();
-
-                // Подсчет 1вого времени процесса
-                int i = 0;
-                foreach (Process process in processes.Values)
-                {
-                    processesTime[i].ProcessTime1 = PTAPI.GetProcessTimesUse(process.Handle);
-                    i++;
-                }
-
-                Thread.Sleep(100);
-
-                // Подсчет 2вого системного времени процесса
-                var systemTime2 = PTAPI.GetSystemTimesAll();
-
-                // Подсчет 2вого времени процесса
-                i = 0;
-                foreach (Process process in processes.Values)
-                {
-                    processesTime[i].ProcessTime2 = PTAPI.GetProcessTimesUse(process.Handle);
-                    i++;
-                }
-
-                // Подсчет загрузки цп процессами
-                var systemTimeDelta = systemTime2 - systemTime1;
-
-                i = 0;
-                foreach (var process in processes)
-                {
-                    var delta = (processesTime[i].ProcessTime2 - processesTime[i].ProcessTime1) * 1.0;
-                    process.Value.SetCpu(Convert.ToUInt64(delta / systemTimeDelta * 100));
-                    i++;
-                }
-
-
-                HAPI.CloseHandle(handleProcessSnap);
+                CalcCpuUse();
             }
 
             Count = processes.Count;
+        }
+
+        private void CalcProcessHandle(uint[]? processesIds)
+        {
+            nint processHandle;
+            foreach (uint indexIds in processesIds)
+            {
+                processHandle = PTAPI.OpenProcess(PTAPI.ProcessDesiredAccess.PROCESS_ALL_ACCESS, false, indexIds);
+                if (processHandle != nint.Zero)
+                {
+                    processes.Add(indexIds, new Process(indexIds, processHandle));
+                }
+            }
+        }
+
+        private void CalcCpuUse()
+        {
+            var processesTime = new ProcessTime[processes.Count];
+
+            // Подсчет 1вого системного времени процесса
+            var systemTime1 = PTAPI.GetSystemTimesAll();
+
+            // Подсчет 1вого времени процесса
+            int i = 0;
+            foreach (Process process in processes.Values)
+            {
+                processesTime[i].ProcessTime1 = PTAPI.GetProcessTimesUse(process.Handle);
+                i++;
+            }
+
+            Thread.Sleep(100);
+
+            // Подсчет 2вого системного времени процесса
+            var systemTime2 = PTAPI.GetSystemTimesAll();
+
+            // Подсчет 2вого времени процесса
+            i = 0;
+            foreach (Process process in processes.Values)
+            {
+                processesTime[i].ProcessTime2 = PTAPI.GetProcessTimesUse(process.Handle);
+                i++;
+            }
+
+            // Подсчет загрузки цп процессами
+            var systemTimeDelta = systemTime2 - systemTime1;
+
+            i = 0;
+            foreach (var process in processes)
+            {
+                var delta = (processesTime[i].ProcessTime2 - processesTime[i].ProcessTime1) * 1.0;
+                process.Value.SetCpu(Convert.ToUInt64(delta / systemTimeDelta * 100));
+                i++;
+            }
+        }
+
+        private void CalcThreadUse()
+        {
+            var handleProcessSnap = THAPI.CreateToolhelp32Snapshot(THAPI.Flag.TH32CS_SNAPTHREAD, 0);
+            for (var threadEntry32 = THAPI.Thread32First(handleProcessSnap); threadEntry32 != null; threadEntry32 = THAPI.Thread32Next(handleProcessSnap))
+            {
+                if (processes.TryGetValue(threadEntry32.Value.th32OwnerProcessID, out Process process))
+                {
+                    process.IncrementThreadCount();
+                }
+
+            }
+
+            HAPI.CloseHandle(handleProcessSnap);
         }
 
         public void KillProcessTree(uint processId)

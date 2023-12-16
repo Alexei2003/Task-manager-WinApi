@@ -64,7 +64,7 @@
             // 
             // tUpdate
             // 
-            tUpdate.Interval = 1000;
+            tUpdate.Interval = 2000;
             tUpdate.Tick += tUpdate_Tick;
             // 
             // pProceses
@@ -94,7 +94,7 @@
             bChangeVisableColumns.Name = "bChangeVisableColumns";
             bChangeVisableColumns.Size = new Size(100, 50);
             bChangeVisableColumns.TabIndex = 7;
-            bChangeVisableColumns.Text = "Скрыть столбцы";
+            bChangeVisableColumns.Text = "Изменить столбцы";
             bChangeVisableColumns.UseVisualStyleBackColor = true;
             bChangeVisableColumns.Click += bChangeVisableColumns_Click;
             // 

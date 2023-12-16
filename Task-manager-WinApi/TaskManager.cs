@@ -2,8 +2,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Reflection;
 using System.Text.Json;
+using SystemInfo.SystemDate.GlobalStatistics;
 using SystemInfo.SystemDate.Processes;
 using Task_manager_WinApi.Language;
+using static SystemInfo.SystemDate.GlobalStatistics.GlobalStatistics;
 using static Task_manager_WinApi.ProcessesColumns;
 
 namespace Task_manager_WinApi
@@ -11,6 +13,8 @@ namespace Task_manager_WinApi
     internal partial class TaskManager : Form
     {
         private ListProcesses listProcesses = new();
+
+        private GlobalStatistics globalStatistics = new();
 
         private ProcessesColumns processesColumns;
         private ProcessesColumnsName[] processesColumnWhitchVisable =
@@ -39,17 +43,24 @@ namespace Task_manager_WinApi
 
         private string? searchProcess;
 
+        private StatisticsType statisticsType = StatisticsType.Cpu;
+
         public TaskManager()
         {
-            ChangeLanguage(Localization.Language.ru);
-
             InitializeComponent();
+
+            cbLanguage.SelectedIndex = 0;
+            cbUpdateTime.SelectedIndex = 0;
+
             ProcessesUpdate();
             tUpdate.Start();
 
             HideAllPanelsExcept(pProceses);
 
             typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dgvProcesses, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, pMainGraph, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, pCpu, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, pRam, new object[] { true });
         }
 
         private void ProcessesUpdate()
@@ -148,13 +159,14 @@ namespace Task_manager_WinApi
 
         private void GlobalStatisticsUpdate()
         {
-
+            globalStatistics.Update();
         }
 
         private void HideAllPanelsExcept(Panel panel)
         {
             pProceses.Visible = false;
             pGlobalStatistics.Visible = false;
+            pSetting.Visible = false;
 
             panel.Visible = true;
         }
@@ -207,8 +219,6 @@ namespace Task_manager_WinApi
         {
             if (!pGlobalStatistics.Visible)
             {
-                GlobalStatisticsUpdate();
-
                 HideAllPanelsExcept(pGlobalStatistics);
             }
         }
@@ -219,9 +229,12 @@ namespace Task_manager_WinApi
             {
                 ProcessesUpdate();
             }
+            GlobalStatisticsUpdate();
             if (pGlobalStatistics.Visible)
             {
-                GlobalStatisticsUpdate();
+                pMainGraph.Invalidate();
+                pCpu.Invalidate();
+                pRam.Invalidate();
             }
         }
 
@@ -258,14 +271,108 @@ namespace Task_manager_WinApi
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void pMainGraph_Paint(object sender, PaintEventArgs e)
         {
-            ChangeLanguage(Localization.Language.en);
+            var g = e.Graphics;
+
+            switch (statisticsType)
+            {
+                case StatisticsType.Cpu:
+                    tbMainGraph.Text = tbCpu.Text;
+                    PaintGraph(g, pMainGraph, globalStatistics.CpuUsePercent, Color.Red);
+                    break;
+
+                case StatisticsType.Ram:
+                    tbMainGraph.Text = tbRam.Text;
+                    PaintGraph(g, pMainGraph, globalStatistics.RamUsePercent, Color.Blue);
+                    break;
+            }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private static void PaintGraph(Graphics g, Panel panel, Queue<int> queue, Color color)
         {
-            ChangeLanguage(Localization.Language.ru);
+            var brush = new SolidBrush(color);
+
+            var points = new Point[GlobalStatistics.COUNT_TIME + 3];
+
+            var stepPaintX = panel.Width / GlobalStatistics.COUNT_TIME;
+            var stepPaintY = panel.Height / (GlobalStatistics.MAX_PERCENT);
+
+            int i = 0;
+            for (; i < GlobalStatistics.COUNT_TIME - queue.Count; i++)
+            {
+                points[i] = new Point(i * stepPaintX, ((GlobalStatistics.MAX_PERCENT - 0) * stepPaintY));
+            }
+
+            foreach (var cpu in queue)
+            {
+                points[i] = new Point(i * stepPaintX, ((GlobalStatistics.MAX_PERCENT - cpu) * stepPaintY));
+                i++;
+            }
+            points[i] = new Point(i * stepPaintX, points[i - 1].Y);
+            i++;
+            points[i] = new Point(i * stepPaintX, panel.Height);
+            i++;
+            points[i] = new Point(0, panel.Height);
+
+            g.FillPolygon(brush, points);
+
+            PaintLines(g, panel);
+        }
+
+        private static void PaintLines(Graphics g, Panel panel)
+        {
+            var pen = new Pen(Color.Black);
+
+            var stepPaintX = panel.Width / GlobalStatistics.COUNT_TIME;
+            var stepPaintY = panel.Height / 10;
+
+            for (int i = 1; i < 10; i++)
+            {
+                g.DrawLine(pen, new Point { X = 0, Y = i * stepPaintY }, new Point { X = panel.Width, Y = i * stepPaintY });
+            }
+
+            for (int i = 1; i < GlobalStatistics.COUNT_TIME; i++)
+            {
+                g.DrawLine(pen, new Point { X = i * stepPaintX, Y = 0 }, new Point { X = i * stepPaintX, Y = panel.Height });
+            }
+        }
+
+        private void pCpu_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            PaintGraph(g, pCpu, globalStatistics.CpuUsePercent, Color.Red);
+        }
+
+        private void pRam_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            PaintGraph(g, pRam, globalStatistics.RamUsePercent, Color.Blue);
+        }
+
+        private void pCpu_Click(object sender, EventArgs e)
+        {
+            statisticsType = StatisticsType.Cpu;
+        }
+
+        private void pRam_Click(object sender, EventArgs e)
+        {
+            statisticsType = StatisticsType.Ram;
+        }
+
+        private void bSetting_Click(object sender, EventArgs e)
+        {
+            HideAllPanelsExcept(pSetting);
+        }
+
+        private void cbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChangeLanguage((Localization.Language)cbLanguage.SelectedIndex);
+        }
+
+        private void cbUpdateTime_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tUpdate.Interval = Convert.ToInt32(cbUpdateTime.Text) * 1000;
         }
     }
 }

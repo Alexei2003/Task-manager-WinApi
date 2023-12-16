@@ -14,7 +14,7 @@ namespace SystemInfo.SystemDate.Processes
         public string Name { get; }
         public string FilePath { get; }
         public string UserName { get; }
-        public ulong Cpu { get; private set; }
+        public uint Cpu { get; private set; }
         public int CountThreads { get; private set; } = 0;
         public SystemInfo.Processes.WinApi.PsapiDLL.PROCESS_MEMORY_COUNTERS Memory { get; }
 
@@ -59,7 +59,7 @@ namespace SystemInfo.SystemDate.Processes
             CountThreads++;
         }
 
-        public void SetCpu(ulong value)
+        public void SetCpu(uint value)
         {
             Cpu = value;
         }

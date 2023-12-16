@@ -1,7 +1,4 @@
-﻿using static Task_manager_WinApi.ProcessesColumns;
-using System.Text.Json;
-
-namespace Task_manager_WinApi.Language
+﻿namespace Task_manager_WinApi.Language
 {
     internal class Localization
     {

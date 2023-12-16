@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using static SystemInfo.Processes.WinApi.PTAPI.ProcessthreadsapiDLL;
 
 namespace SystemInfo.Processes.WinApi.PTAPI
 {
@@ -162,33 +161,35 @@ namespace SystemInfo.Processes.WinApi.PTAPI
 
         public static UInt64 GetProcessTimesUse(IntPtr processHandle)
         {
-            ProcessthreadsapiDLL.GetProcessTimes(processHandle,out _,out _, out ProcessthreadsapiDLL.FILETIME KernelTimeStruct, out ProcessthreadsapiDLL.FILETIME UserTimeStruct);
+            ProcessthreadsapiDLL.GetProcessTimes(processHandle, out _, out _, out ProcessthreadsapiDLL.FILETIME KernelTimeStruct, out ProcessthreadsapiDLL.FILETIME UserTimeStruct);
 
-            UInt64 KernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | KernelTimeStruct.dwLowDateTime;
-            UInt64 UserTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | UserTimeStruct.dwLowDateTime;
+            UInt64 kernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | (UInt64)KernelTimeStruct.dwLowDateTime;
+            UInt64 userTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | (UInt64)UserTimeStruct.dwLowDateTime;
 
-            return KernelTime + UserTime;
+            return kernelTime + userTime;
         }
 
         public static UInt64 GetSystemTimesAll()
         {
             ProcessthreadsapiDLL.GetSystemTimes(out ProcessthreadsapiDLL.FILETIME IdleTimeStruct, out ProcessthreadsapiDLL.FILETIME KernelTimeStruct, out ProcessthreadsapiDLL.FILETIME UserTimeStruct);
 
-            UInt64 IdleTime = ((UInt64)IdleTimeStruct.dwHighDateTime << 32) | IdleTimeStruct.dwLowDateTime;
-            UInt64 KernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | KernelTimeStruct.dwLowDateTime;
-            UInt64 UserTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | UserTimeStruct.dwLowDateTime;
+            UInt64 idleTime = ((UInt64)IdleTimeStruct.dwHighDateTime << 32) | (UInt64)IdleTimeStruct.dwLowDateTime;
+            UInt64 kernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | (UInt64)KernelTimeStruct.dwLowDateTime;
+            UInt64 userTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | (UInt64)UserTimeStruct.dwLowDateTime;
 
-            return IdleTime + KernelTime + UserTime;   
+            return kernelTime + userTime;
         }
 
         public static UInt64 GetSystemTimesUse()
         {
-            ProcessthreadsapiDLL.GetSystemTimes(out _, out ProcessthreadsapiDLL.FILETIME KernelTimeStruct, out ProcessthreadsapiDLL.FILETIME UserTimeStruct);
+            ProcessthreadsapiDLL.GetSystemTimes(out ProcessthreadsapiDLL.FILETIME IdleTimeStruct, out ProcessthreadsapiDLL.FILETIME KernelTimeStruct, out ProcessthreadsapiDLL.FILETIME UserTimeStruct);
 
-            UInt64 KernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | KernelTimeStruct.dwLowDateTime;
-            UInt64 UserTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | UserTimeStruct.dwLowDateTime;
+            UInt64 idleTime = ((UInt64)IdleTimeStruct.dwHighDateTime << 32) | (UInt64)IdleTimeStruct.dwLowDateTime;
+            UInt64 kernelTime = ((UInt64)KernelTimeStruct.dwHighDateTime << 32) | (UInt64)KernelTimeStruct.dwLowDateTime;
+            UInt64 userTime = ((UInt64)UserTimeStruct.dwHighDateTime << 32) | (UInt64)UserTimeStruct.dwLowDateTime;
 
-            return KernelTime + UserTime;
+
+            return kernelTime + userTime - idleTime;
         }
     }
 }

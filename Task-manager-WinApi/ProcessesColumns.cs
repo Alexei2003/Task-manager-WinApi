@@ -1,6 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using SystemInfo.SystemDate.Processes;
 using Task_manager_WinApi.Language;
 
@@ -50,7 +48,7 @@ namespace Task_manager_WinApi
                 case ProcessesColumnsName.UserName:
                     return $"{process.UserName}";
                 case ProcessesColumnsName.Cpu:
-                    return $"{process.Cpu}";
+                    return $"{process.Cpu,+SHIFT}";
                 case ProcessesColumnsName.CountThreads:
                     return $"{process.CountThreads,+SHIFT}";
                 case ProcessesColumnsName.PageFaultCount:

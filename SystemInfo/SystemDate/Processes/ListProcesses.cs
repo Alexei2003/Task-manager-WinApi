@@ -83,7 +83,7 @@ namespace SystemInfo.SystemDate.Processes
             foreach (var process in processes)
             {
                 var delta = (processesTime[i].ProcessTime2 - processesTime[i].ProcessTime1) * 1.0;
-                process.Value.SetCpu(Convert.ToUInt64(delta / systemTimeDelta * 100));
+                process.Value.SetCpu(Convert.ToUInt32(delta / systemTimeDelta * 100));
                 i++;
             }
         }

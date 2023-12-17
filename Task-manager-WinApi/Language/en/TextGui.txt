@@ -1,1 +1,1 @@
-﻿
+{"fTaskManager":"Task Manager","bKillProcess":"Close the process","bChangeVisableColumns":"Select Columns","tbSearch":"Search by name, id","bProcesses":"Processes","bGlobalStatistics":"Performance","bSetting":"Settings","tbCpu":"CPU","tbRam":"RAM","tbLanguage":"Language","tbUpdateTime":"Update rate"}

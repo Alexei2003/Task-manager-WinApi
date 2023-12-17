@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-using SystemInfo.Processes.WinApi.PTAPI;
+﻿using SystemInfo.Processes.WinApi.PTAPI;
 using SystemInfo.SystemDate.WinApi.SIAPI;
 
 namespace SystemInfo.SystemDate.GlobalStatistics
@@ -11,7 +10,7 @@ namespace SystemInfo.SystemDate.GlobalStatistics
 
         public enum StatisticsType
         {
-            Cpu,Ram
+            Cpu, Ram
         }
 
         public Queue<int> CpuUsePercent { get; private set; } = new Queue<int>();
@@ -41,7 +40,7 @@ namespace SystemInfo.SystemDate.GlobalStatistics
             timeAllPred = timeAll;
             timeUsePred = timeUse;
 
-            if (delta > MAX_PERCENT) 
+            if (delta > MAX_PERCENT)
             {
                 return;
             }

@@ -1,90 +1,108 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-
+﻿using System.Text.Json;
+using Task_manager_WinApi;
+using Task_manager_WinApi.Language;
 class Program
 {
-    const int TOKEN_QUERY = 0x0008;
-    const int TokenUser = 1;
-
-    [DllImport("advapi32.dll", SetLastError = true)]
-    static extern bool OpenProcessToken(IntPtr ProcessHandle, int DesiredAccess, out IntPtr TokenHandle);
-
-    [DllImport("advapi32.dll", SetLastError = true)]
-    static extern bool GetTokenInformation(IntPtr TokenHandle, int TokenInformationClass, IntPtr TokenInformation, int TokenInformationLength, out int ReturnLength);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    static extern bool CloseHandle(IntPtr hObject);
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct TOKEN_USER
-    {
-        public SID_AND_ATTRIBUTES User;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SID_AND_ATTRIBUTES
-    {
-        public IntPtr Sid;
-        public int Attributes;
-    }
-
     static void Main(string[] args)
     {
-        string processName = "browser.exe"; // Имя процесса, для которого нужно получить имя пользователя
+        // en
+        {
+            var processesColumnsNames = new Dictionary<ProcessesColumns.ProcessesColumnsName, string>()
+            {
+                { ProcessesColumns.ProcessesColumnsName.Id,"Id"},
+                { ProcessesColumns.ProcessesColumnsName.Name,"Name"},
+                { ProcessesColumns.ProcessesColumnsName.FilePath,"File path"},
+                { ProcessesColumns.ProcessesColumnsName.UserName,"Username"},
+                { ProcessesColumns.ProcessesColumnsName.Cpu,"CPU"},
+                { ProcessesColumns.ProcessesColumnsName.CountThreads,"Threads"},
+                { ProcessesColumns.ProcessesColumnsName.PageFaultCount,"The number of page faults"},
+                { ProcessesColumns.ProcessesColumnsName.PeakWorkingSetSize,"The peak working set size"},
+                { ProcessesColumns.ProcessesColumnsName.WorkingSetSize,"The current working set size"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakPagedPoolUsage,"The peak paged pool usage"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPagedPoolUsage,"The current paged pool usage"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,"The peak nonpaged pool usage"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaNonPagedPoolUsage,"The current nonpaged pool usage"},
+                { ProcessesColumns.ProcessesColumnsName.PagefileUsage,"The Commit Charge value "},
+                { ProcessesColumns.ProcessesColumnsName.PeakPagefileUsage,"The peak value of the Commit Charge"}
+            };
 
-        Process process = System.Diagnostics.Process.GetProcessById(892);
-        if (process != null)
-        {
-            IntPtr processHandle = process.Handle;
-            IntPtr tokenHandle;
-            if (OpenProcessToken(processHandle, TOKEN_QUERY, out tokenHandle))
-            {
-                try
-                {
-                    string userName = GetProcessUserName(tokenHandle);
-                    Console.WriteLine($"Имя пользователя, создавшего процесс '{processName}': {userName}");
-                }
-                finally
-                {
-                    CloseHandle(tokenHandle);
-                }
-            }
-            else
-            {
-                int error = Marshal.GetLastWin32Error();
-                Console.WriteLine($"Ошибка при открытии токена процесса: {new Win32Exception(error).Message}");
-            }
-        }
-        else
-        {
-            Console.WriteLine($"Процесс '{processName}' не найден.");
-        }
-    }
+            var str = JsonSerializer.Serialize(processesColumnsNames);
 
-    static string GetProcessUserName(IntPtr tokenHandle)
-    {
-        const int bufLength = 1024;
-        IntPtr userTokenInformation = Marshal.AllocHGlobal(bufLength);
-        try
-        {
-            int returnLength;
-            if (GetTokenInformation(tokenHandle, TokenUser, userTokenInformation, bufLength, out returnLength))
-            {
-                TOKEN_USER tokenUser = (TOKEN_USER)Marshal.PtrToStructure(userTokenInformation, typeof(TOKEN_USER));
-                SecurityIdentifier sid = new SecurityIdentifier(tokenUser.User.Sid);
-                return sid.Translate(typeof(NTAccount)).ToString();
-            }
-            else
-            {
-                int error = Marshal.GetLastWin32Error();
-                throw new Win32Exception(error);
-            }
+            File.WriteAllText($"Language\\{Localization.Language.en}\\ProcessesColumnsNames.txt", str);
         }
-        finally
+
+        //ru
         {
-            Marshal.FreeHGlobal(userTokenInformation);
+            var processesColumnsNames = new Dictionary<ProcessesColumns.ProcessesColumnsName, string>()
+            {
+                { ProcessesColumns.ProcessesColumnsName.Id,"ИД"},
+                { ProcessesColumns.ProcessesColumnsName.Name,"Имя"},
+                { ProcessesColumns.ProcessesColumnsName.FilePath,"Путь к файлу"},
+                { ProcessesColumns.ProcessesColumnsName.UserName,"Имя пользователя"},
+                { ProcessesColumns.ProcessesColumnsName.Cpu,"ЦП"},
+                { ProcessesColumns.ProcessesColumnsName.CountThreads,"Потоки"},
+                { ProcessesColumns.ProcessesColumnsName.PageFaultCount,"Количество ошибок страницы"},
+                { ProcessesColumns.ProcessesColumnsName.PeakWorkingSetSize,"Максимальный размер рабочего набора"},
+                { ProcessesColumns.ProcessesColumnsName.WorkingSetSize,"Текущий размер рабочего набора"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakPagedPoolUsage,"Пиковое использование выстраивного пула"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPagedPoolUsage,"Текущее использование выстраивного пула"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,"Пиковое использование непагрегированного пула"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaNonPagedPoolUsage,"Текущее использование непагрегированного пула"},
+                { ProcessesColumns.ProcessesColumnsName.PagefileUsage,"Значение фиксации заряда"},
+                { ProcessesColumns.ProcessesColumnsName.PeakPagefileUsage,"Пиковое значение фиксации заряда"}
+            };
+
+            var str = JsonSerializer.Serialize(processesColumnsNames);
+
+            File.WriteAllText($"Language\\{Localization.Language.ru}\\ProcessesColumnsNames.txt", str);
+        }
+
+
+        /////////////////////////
+
+
+        // en
+        {
+            var textGui = new TextGui()
+            {
+                fTaskManager = "Task Manager",
+                bKillProcess = "Close the process",
+                bChangeVisableColumns = "Select Columns",
+                tbSearch = "Search by name, id",
+                bProcesses = "Processes",
+                bGlobalStatistics = "Performance",
+                bSetting = "Settings",
+                tbCpu = "CPU",
+                tbRam = "RAM",
+                tbLanguage = "Language",
+                tbUpdateTime = "Update rate"
+            };
+
+            var str = JsonSerializer.Serialize(textGui);
+
+            File.WriteAllText($"Language\\{Localization.Language.en}\\TextGui.txt", str);
+        }
+
+        //ru
+        {
+            var textGui = new TextGui()
+            {
+                fTaskManager = "Диспетчер задача",
+                bKillProcess = "Закрыть процесс",
+                bChangeVisableColumns = "Выбрать столбцы",
+                tbSearch = "Поиск по имени, id",
+                bProcesses = "Процессы",
+                bGlobalStatistics = "Производительность",
+                bSetting = "Настройки",
+                tbCpu = "ЦП",
+                tbRam = "ОЗУ",
+                tbLanguage = "Язык",
+                tbUpdateTime = "Скорость обновления"
+            };
+
+            var str = JsonSerializer.Serialize(textGui);
+
+            File.WriteAllText($"Language\\{Localization.Language.ru}\\TextGui.txt", str);
         }
     }
 }

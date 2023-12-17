@@ -5,9 +5,9 @@ namespace Task_manager_WinApi
     internal partial class ChangeVisableColumns : Form
     {
         private CheckBox[] checkBoxs;
-        private TaskManager taskManager;
+        private fTaskManager taskManager;
 
-        public ChangeVisableColumns(ProcessesColumnsName[] processesColumnWhitchVisable, ProcessesColumns processesColumns, TaskManager taskManager)
+        public ChangeVisableColumns(ProcessesColumnsName[] processesColumnWhitchVisable, ProcessesColumns processesColumns, fTaskManager taskManager)
         {
             InitializeComponent();
             this.taskManager = taskManager;

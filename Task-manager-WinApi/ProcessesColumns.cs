@@ -4,7 +4,7 @@ using Task_manager_WinApi.Language;
 
 namespace Task_manager_WinApi
 {
-    internal class ProcessesColumns
+    public class ProcessesColumns
     {
         public enum ProcessesColumnsName
         {

@@ -1,6 +1,6 @@
 ﻿namespace Task_manager_WinApi
 {
-    partial class TaskManager
+    partial class fTaskManager
     {
         /// <summary>
         ///  Required designer variable.
@@ -270,20 +270,20 @@
             bSetting.UseVisualStyleBackColor = true;
             bSetting.Click += bSetting_Click;
             // 
-            // TaskManager
+            // fTaskManager
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1219, 562);
             Controls.Add(bSetting);
-            Controls.Add(pSetting);
             Controls.Add(bGlobalStatistics);
-            Controls.Add(pGlobalStatistics);
             Controls.Add(bProcesses);
             Controls.Add(pProceses);
+            Controls.Add(pSetting);
+            Controls.Add(pGlobalStatistics);
             DoubleBuffered = true;
             MaximizeBox = false;
-            Name = "TaskManager";
+            Name = "fTaskManager";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dgvProcesses).EndInit();
             pProceses.ResumeLayout(false);

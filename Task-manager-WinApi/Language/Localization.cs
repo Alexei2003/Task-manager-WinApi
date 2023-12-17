@@ -1,6 +1,6 @@
 ﻿namespace Task_manager_WinApi.Language
 {
-    internal class Localization
+    public class Localization
     {
         public enum Language
         {

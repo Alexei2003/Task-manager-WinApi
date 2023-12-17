@@ -10,7 +10,7 @@ using static Task_manager_WinApi.ProcessesColumns;
 
 namespace Task_manager_WinApi
 {
-    internal partial class TaskManager : Form
+    internal partial class fTaskManager : Form
     {
         private ListProcesses listProcesses = new();
 
@@ -45,7 +45,7 @@ namespace Task_manager_WinApi
 
         private StatisticsType statisticsType = StatisticsType.Cpu;
 
-        public TaskManager()
+        public fTaskManager()
         {
             InitializeComponent();
 
@@ -198,11 +198,17 @@ namespace Task_manager_WinApi
             var str = File.ReadAllText($"Language\\{Localization.GetLanguageName(language)}\\TextGui.txt");
             var textGui = JsonSerializer.Deserialize<TextGui>(str);
 
+            Text = textGui.fTaskManager;
             bKillProcess.Text = textGui.bKillProcess;
             bChangeVisableColumns.Text = textGui.bChangeVisableColumns;
             tbSearch.PlaceholderText = textGui.tbSearch;
             bProcesses.Text = textGui.bProcesses;
             bGlobalStatistics.Text = textGui.bGlobalStatistics;
+            bSetting.Text = textGui.bSetting;
+            tbCpu.Text = textGui.tbCpu;
+            tbRam.Text = textGui.tbRam;
+            tbLanguage.Text = textGui.tbLanguage;
+            tbUpdateTime.Text = textGui.tbUpdateTime;
         }
 
         private void bProcesses_Click(object sender, EventArgs e)

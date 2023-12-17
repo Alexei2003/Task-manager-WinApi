@@ -185,7 +185,7 @@ namespace Task_manager_WinApi
         {
             ChangeLanguageProcessesColumns(language);
 
-            //ChangeLanguageTextGui(language);
+            ChangeLanguageTextGui(language);
         }
 
         private void ChangeLanguageProcessesColumns(Localization.Language language)

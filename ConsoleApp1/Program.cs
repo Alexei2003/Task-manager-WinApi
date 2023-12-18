@@ -75,7 +75,9 @@ class Program
                 tbCpu = "CPU",
                 tbRam = "RAM",
                 tbLanguage = "Language",
-                tbUpdateTime = "Update rate"
+                tbUpdateTime = "Update rate",
+                fChangeVisableColumns = "Change columns",
+                bOk = "Save"
             };
 
             var str = JsonSerializer.Serialize(textGui);
@@ -97,7 +99,9 @@ class Program
                 tbCpu = "ЦП",
                 tbRam = "ОЗУ",
                 tbLanguage = "Язык",
-                tbUpdateTime = "Скорость обновления"
+                tbUpdateTime = "Скорость обновления",
+                fChangeVisableColumns = "изменение столбцов",
+                bOk = "Сохранить"
             };
 
             var str = JsonSerializer.Serialize(textGui);

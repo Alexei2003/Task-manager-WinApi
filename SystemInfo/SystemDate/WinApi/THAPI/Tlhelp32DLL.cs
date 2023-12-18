@@ -53,10 +53,10 @@ namespace SystemInfo.Processes.WinApi.Новая_папка
         }
 
         [DllImport("kernel32.dll")]
-        public static extern bool Thread32First(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+        protected static extern bool Thread32First(IntPtr hSnapshot, ref THREADENTRY32 lpte);
 
         [DllImport("kernel32.dll")]
-        public static extern bool Thread32Next(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+        protected static extern bool Thread32Next(IntPtr hSnapshot, ref THREADENTRY32 lpte);
 
     }
 }

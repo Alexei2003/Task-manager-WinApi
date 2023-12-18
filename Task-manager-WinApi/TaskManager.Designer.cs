@@ -282,6 +282,7 @@
             Controls.Add(pSetting);
             Controls.Add(pGlobalStatistics);
             DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "fTaskManager";
             Text = "Form1";

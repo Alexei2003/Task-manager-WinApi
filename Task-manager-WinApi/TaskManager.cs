@@ -39,11 +39,13 @@ namespace Task_manager_WinApi
 
         private uint? selectedProcessId = null;
 
-        private ChangeVisableColumns? subForm = null;
+        private fChangeVisableColumns? subForm = null;
 
         private string? searchProcess;
 
         private StatisticsType statisticsType = StatisticsType.Cpu;
+
+        private TextGui textGui;
 
         public fTaskManager()
         {
@@ -196,7 +198,7 @@ namespace Task_manager_WinApi
         private void ChangeLanguageTextGui(Localization.Language language)
         {
             var str = File.ReadAllText($"Language\\{Localization.GetLanguageName(language)}\\TextGui.txt");
-            var textGui = JsonSerializer.Deserialize<TextGui>(str);
+            textGui = JsonSerializer.Deserialize<TextGui>(str);
 
             Text = textGui.fTaskManager;
             bKillProcess.Text = textGui.bKillProcess;
@@ -209,6 +211,7 @@ namespace Task_manager_WinApi
             tbRam.Text = textGui.tbRam;
             tbLanguage.Text = textGui.tbLanguage;
             tbUpdateTime.Text = textGui.tbUpdateTime;
+            
         }
 
         private void bProcesses_Click(object sender, EventArgs e)
@@ -254,7 +257,7 @@ namespace Task_manager_WinApi
 
         private void bChangeVisableColumns_Click(object sender, EventArgs e)
         {
-            subForm = new ChangeVisableColumns(processesColumnWhitchVisable, processesColumns, this);
+            subForm = new fChangeVisableColumns(processesColumnWhitchVisable, processesColumns, this, textGui);
 
             subForm.Visible = true;
         }

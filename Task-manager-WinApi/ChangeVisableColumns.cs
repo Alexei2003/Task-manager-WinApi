@@ -2,14 +2,18 @@
 
 namespace Task_manager_WinApi
 {
-    internal partial class ChangeVisableColumns : Form
+    internal partial class fChangeVisableColumns : Form
     {
         private CheckBox[] checkBoxs;
         private fTaskManager taskManager;
 
-        public ChangeVisableColumns(ProcessesColumnsName[] processesColumnWhitchVisable, ProcessesColumns processesColumns, fTaskManager taskManager)
+        public fChangeVisableColumns(ProcessesColumnsName[] processesColumnWhitchVisable, ProcessesColumns processesColumns, fTaskManager taskManager, TextGui textGui)
         {
             InitializeComponent();
+
+            Text = textGui.fChangeVisableColumns;
+            bOk.Text = textGui.bOk;
+
             this.taskManager = taskManager;
 
             checkBoxs = new CheckBox[processesColumns.Count - 1];

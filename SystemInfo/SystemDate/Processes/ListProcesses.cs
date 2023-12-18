@@ -27,7 +27,7 @@ namespace SystemInfo.SystemDate.Processes
             {
                 CalcProcessHandle(processesIds);
 
-                CalcThreadUse();
+                CalcThread();
 
                 CalcCpuUse();
             }
@@ -88,7 +88,7 @@ namespace SystemInfo.SystemDate.Processes
             }
         }
 
-        private void CalcThreadUse()
+        private void CalcThread()
         {
             var handleProcessSnap = THAPI.CreateToolhelp32Snapshot(THAPI.Flag.TH32CS_SNAPTHREAD, 0);
             for (var threadEntry32 = THAPI.Thread32First(handleProcessSnap); threadEntry32 != null; threadEntry32 = THAPI.Thread32Next(handleProcessSnap))

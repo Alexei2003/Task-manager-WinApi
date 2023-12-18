@@ -51,6 +51,8 @@ namespace SystemInfo.SystemDate.Processes
 
             Marshal.FreeHGlobal(tokenInfo);
 
+            HAPI.CloseHandle(tokenHandle);
+
             return sid.Translate(typeof(NTAccount)).ToString();
         }
 

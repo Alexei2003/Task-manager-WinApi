@@ -2,7 +2,7 @@
 {
     public class TextGui
     {
-        public string fTaskManager {  get; set; }
+        public string fTaskManager { get; set; }
         public string bKillProcess { get; set; }
         public string bChangeVisableColumns { get; set; }
         public string tbSearch { get; set; }
@@ -13,5 +13,7 @@
         public string tbRam { get; set; }
         public string tbLanguage { get; set; }
         public string tbUpdateTime { get; set; }
+        public string fChangeVisableColumns { get; set; }
+        public string bOk { get; set; }
     }
 }

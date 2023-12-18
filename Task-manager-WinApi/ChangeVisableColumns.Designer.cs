@@ -1,6 +1,6 @@
 ﻿namespace Task_manager_WinApi
 {
-    partial class ChangeVisableColumns
+    partial class fChangeVisableColumns
     {
         /// <summary>
         /// Required designer variable.
@@ -41,13 +41,13 @@
             bOk.UseVisualStyleBackColor = true;
             bOk.Click += bOk_Click;
             // 
-            // ChangeVisableColumns
+            // fChangeVisableColumns
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(284, 630);
             Controls.Add(bOk);
-            Name = "ChangeVisableColumns";
+            Name = "fChangeVisableColumns";
             Text = "ChangeVisableColumns";
             ResumeLayout(false);
         }

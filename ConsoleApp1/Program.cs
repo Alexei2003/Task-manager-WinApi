@@ -16,14 +16,14 @@ class Program
                 { ProcessesColumns.ProcessesColumnsName.Cpu,"CPU"},
                 { ProcessesColumns.ProcessesColumnsName.CountThreads,"Threads"},
                 { ProcessesColumns.ProcessesColumnsName.PageFaultCount,"The number of page faults"},
-                { ProcessesColumns.ProcessesColumnsName.PeakWorkingSetSize,"The peak working set size"},
-                { ProcessesColumns.ProcessesColumnsName.WorkingSetSize,"The current working set size"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaPeakPagedPoolUsage,"The peak paged pool usage"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaPagedPoolUsage,"The current paged pool usage"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,"The peak nonpaged pool usage"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaNonPagedPoolUsage,"The current nonpaged pool usage"},
-                { ProcessesColumns.ProcessesColumnsName.PagefileUsage,"The Commit Charge value "},
-                { ProcessesColumns.ProcessesColumnsName.PeakPagefileUsage,"The peak value of the Commit Charge"}
+                { ProcessesColumns.ProcessesColumnsName.PeakWorkingSetSize,"The peak working set size(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.WorkingSetSize,"The current working set size(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakPagedPoolUsage,"The peak paged pool usage(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPagedPoolUsage,"The current paged pool usage(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,"The peak nonpaged pool usage(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaNonPagedPoolUsage,"The current nonpaged pool usage(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.PagefileUsage,"The Commit Charge value(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.PeakPagefileUsage,"The peak value of the Commit Charge(KB)"}
             };
 
             var str = JsonSerializer.Serialize(processesColumnsNames);
@@ -42,14 +42,14 @@ class Program
                 { ProcessesColumns.ProcessesColumnsName.Cpu,"ЦП"},
                 { ProcessesColumns.ProcessesColumnsName.CountThreads,"Потоки"},
                 { ProcessesColumns.ProcessesColumnsName.PageFaultCount,"Количество ошибок страницы"},
-                { ProcessesColumns.ProcessesColumnsName.PeakWorkingSetSize,"Максимальный размер рабочего набора"},
-                { ProcessesColumns.ProcessesColumnsName.WorkingSetSize,"Текущий размер рабочего набора"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaPeakPagedPoolUsage,"Пиковое использование выстраивного пула"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaPagedPoolUsage,"Текущее использование выстраивного пула"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,"Пиковое использование непагрегированного пула"},
-                { ProcessesColumns.ProcessesColumnsName.QuotaNonPagedPoolUsage,"Текущее использование непагрегированного пула"},
-                { ProcessesColumns.ProcessesColumnsName.PagefileUsage,"Значение фиксации заряда"},
-                { ProcessesColumns.ProcessesColumnsName.PeakPagefileUsage,"Пиковое значение фиксации заряда"}
+                { ProcessesColumns.ProcessesColumnsName.PeakWorkingSetSize,"Максимальный размер рабочего набора(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.WorkingSetSize,"Текущий размер рабочего набора(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakPagedPoolUsage,"Пиковое использование выстраивного пула(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPagedPoolUsage,"Текущее использование выстраивного пула(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaPeakNonPagedPoolUsage,"Пиковое использование непагрегированного пула(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.QuotaNonPagedPoolUsage,"Текущее использование непагрегированного пула(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.PagefileUsage,"Значение фиксации заряда(KB)"},
+                { ProcessesColumns.ProcessesColumnsName.PeakPagefileUsage,"Пиковое значение фиксации заряда(KB)"}
             };
 
             var str = JsonSerializer.Serialize(processesColumnsNames);

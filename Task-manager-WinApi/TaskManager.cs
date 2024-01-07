@@ -10,11 +10,11 @@ using static Task_manager_WinApi.ProcessesColumns;
 
 namespace Task_manager_WinApi
 {
-    internal partial class fTaskManager : Form
+    internal sealed partial class fTaskManager : Form
     {
         private ListProcesses listProcesses = new();
 
-        private GlobalStatistics globalStatistics = new();
+        private readonly GlobalStatistics globalStatistics = new();
 
         private ProcessesColumns processesColumns;
         private ProcessesColumnsName[] processesColumnWhitchVisable =
@@ -67,11 +67,6 @@ namespace Task_manager_WinApi
 
         private void ProcessesUpdate()
         {
-            var sortedColumn = dgvProcesses.SortedColumn;
-            var sortOrder = dgvProcesses.SortOrder;
-            int indexFirstRowOnDisplay = dgvProcesses.FirstDisplayedScrollingRowIndex;
-            int offsetColumOnDisplay = dgvProcesses.HorizontalScrollingOffset;
-
             listProcesses = new ListProcesses();
 
             // Скрытие колонок 
@@ -135,6 +130,8 @@ namespace Task_manager_WinApi
                     }
                 }
 
+                var sortedColumn = dgvProcesses.SortedColumn;
+                var sortOrder = dgvProcesses.SortOrder;
                 if (sortedColumn != null && dgvProcesses.Columns.Contains(sortedColumn.Name) && sortOrder != SortOrder.None)
                 {
                     dgvProcesses.Sort(dgvProcesses.Columns[sortedColumn.Name], (ListSortDirection)sortOrder - 1);
@@ -148,6 +145,8 @@ namespace Task_manager_WinApi
                     }
                 }
 
+                int indexFirstRowOnDisplay = dgvProcesses.FirstDisplayedScrollingRowIndex;
+                int offsetColumOnDisplay = dgvProcesses.HorizontalScrollingOffset;
                 if (indexFirstRowOnDisplay > -1 && offsetColumOnDisplay > -1)
                 {
                     if (dgvProcesses.Rows.Count > indexFirstRowOnDisplay)
@@ -257,9 +256,10 @@ namespace Task_manager_WinApi
 
         private void bChangeVisableColumns_Click(object sender, EventArgs e)
         {
-            subForm = new fChangeVisableColumns(processesColumnWhitchVisable, processesColumns, this, textGui);
-
-            subForm.Visible = true;
+            subForm = new fChangeVisableColumns(processesColumnWhitchVisable, processesColumns, this, textGui)
+            {
+                Visible = true
+            };
         }
 
         private void dvgProcesses_CellClick(object sender, DataGridViewCellEventArgs e)
